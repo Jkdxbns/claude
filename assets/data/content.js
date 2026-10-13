@@ -82,7 +82,7 @@ window.JM_CONTENT = {
    "label": "Edge AI",
    "path": "/edge-ai/",
    "headline": "I build robots end to end: the model that sees, the firmware that drives, the actuators that move.",
-   "sub": "Edge AI focus: quantization, CUDA and TensorRT on Jetson. You control perception: draw a digit and my own int8 network, running in your browser, tells the arm which block to pick.",
+   "sub": "Edge AI focus: quantization, CUDA and TensorRT on Jetson. You control perception: draw a digit and my own INT8 network, running in your browser, tells the arm which block to pick.",
    "order": [
     "coffin",
     "cuda-vgg16",
@@ -357,7 +357,7 @@ window.JM_CONTENT = {
     "edge-ai",
     "ml"
    ],
-   "blurb": "Trained a bias-free 256-64-10 MLP with int8 weights and uint8 activations so it survives integer-only inference.",
+   "blurb": "Trained a bias-free 256-64-10 MLP with INT8 weights and UINT8 activations so it survives integer-only inference.",
    "spec": [
     [
      "MNIST test accuracy",
@@ -367,29 +367,29 @@ window.JM_CONTENT = {
     [
      "Weights",
      "17,024",
-     "int8"
+     "INT8"
     ],
     [
      "Weight memory",
      "16.6 vs 66.5",
-     "KB (int8 vs fp32)"
+     "KB (INT8 vs FP32)"
     ],
     [
      "Input",
      "16×16",
-     "uint8"
+     "UINT8"
     ]
    ],
    "bars": [],
    "bullets": [
-    "Implemented quantization-aware training (QAT) in PyTorch for a bias-free 256-64-10 MLP using straight-through-estimator fake quantization, int8 per-layer symmetric weights, and uint8 activations; integer-only inference reaches 97.43% on the 10,000-image MNIST test set at 16×16.",
+    "Implemented quantization-aware training (QAT) in PyTorch for a bias-free 256-64-10 MLP using straight-through-estimator fake quantization, INT8 per-layer symmetric weights, and UINT8 activations; integer-only inference reaches 97.43% on the 10,000-image MNIST test set at 16×16.",
     "Calibrated the hidden-activation scale with an EMA observer and froze it for the final 25% of training so weights adapt to the deployed scale."
    ],
    "stack": [
     "PyTorch",
     "QAT",
     "Straight-through estimator",
-    "int8",
+    "INT8",
     "EMA observer"
    ],
    "github": null,
@@ -993,7 +993,7 @@ window.JM_CONTENT = {
   "click any box",
   "move your mouse"
  ],
- "about_site": "The home page runs a live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained int8 network tells the arm which block to pick; tune the firmware or steer the arm yourself.",
+ "about_site": "The home page runs a live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained INT8 network tells the arm which block to pick; tune the firmware or steer the arm yourself.",
  "featured": [
   "coffin",
   "stm32-temp",

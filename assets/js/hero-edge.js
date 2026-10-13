@@ -116,7 +116,7 @@ function drawNet(){
   if(!L.w||!col.fg)return;var c=nctx,i,o,p;
   c.clearRect(0,0,L.w,L.h);
   c.font="10.5px 'IBM Plex Mono', ui-monospace, monospace";c.fillStyle=col.muted;c.textAlign="left";
-  if(anim&&anim.phase==="requant"){c.fillStyle=col.warm;c.fillText(L.narrow?"ReLU → uint8":"ReLU · rescale → uint8",L.xh,12);c.fillStyle=col.muted}else c.fillText(L.narrow?"fc1 · 64 → uint8":"fc1 · 64 int32 → uint8",L.xh,12);c.fillText(L.ow>150?"fc2 · 10 logits":"fc2",L.xo,12);
+  if(anim&&anim.phase==="requant"){c.fillStyle=col.warm;c.fillText(L.narrow?"ReLU → UINT8":"ReLU · rescale → UINT8",L.xh,12);c.fillStyle=col.muted}else c.fillText(L.narrow?"fc1 · 64 → UINT8":"fc1 · 64 INT32 → UINT8",L.xh,12);c.fillText(L.ow>150?"fc2 · 10 logits":"fc2",L.xo,12);
   var ph=anim?anim.phase:"done";
   // wires for the current step
   if(anim&&X){
@@ -237,10 +237,10 @@ function weightMap(o){
 function hexRGB(h){h=h.replace("#","");var n=parseInt(h,16);return [n>>16&255,n>>8&255,n&255]}
 net.addEventListener("pointermove",function(e){
   var r=net.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,html=null,map=false;
-  if(y>L.yo&&y<L.yo+L.oh&&x>L.xo&&x<L.xo+L.ow&&R){var dd=Math.floor((y-L.yo)/(L.oh/10));html="class "+dd+" · acc "+fmt(R.a2[dd])+" (int32)<br>logit "+R.lg[dd].toFixed(2)+" · p = "+(R.pr[dd]*100).toFixed(1)+"%"}
+  if(y>L.yo&&y<L.yo+L.oh&&x>L.xo&&x<L.xo+L.ow&&R){var dd=Math.floor((y-L.yo)/(L.oh/10));html="class "+dd+" · acc "+fmt(R.a2[dd])+" (INT32)<br>logit "+R.lg[dd].toFixed(2)+" · p = "+(R.pr[dd]*100).toFixed(1)+"%"}
   else if(y>L.y0&&y<L.y0+L.g){
     if(x>L.xh&&x<L.xh+L.g){var o=Math.floor((y-L.y0)/(L.g/8))*8+Math.floor((x-L.xh)/(L.g/8));map=true;weightMap(o);
-      html="neuron "+o+" · its 256 int8 weights"+(R?"<br>acc "+fmt(R.a1[o])+" (int32) → h = "+R.h[o]+" (uint8)":"")}
+      html="neuron "+o+" · its 256 INT8 weights"+(R?"<br>acc "+fmt(R.a1[o])+" (INT32) → h = "+R.h[o]+" (UINT8)":"")}
   }
   if(!html){tip.classList.remove("on");return}
   tip.innerHTML=(map?'<span class="m"></span>':"")+"<span>"+html+"</span>";
