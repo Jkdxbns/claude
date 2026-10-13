@@ -987,11 +987,11 @@ window.JM_CONTENT = {
    "cuda-vgg16": "/assets/video/cuda-vgg16.mp4"
   }
  },
- "hero_hint": "A live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained int8 network tells the arm which block to pick; tune the firmware below or steer the arm yourself.",
+ "hero_hint": "A very simple browser model of COFFIN, my capstone project merged with QAT trained model and controllable arm-joint speed and constraints. Draw a digit and my QAT model will infer it then the arm will locate the box with your labelled digit and pick and drop it. Feel free to manually click any box to instruct the arm to pick or move your mouse to control the arm. Be careful or you might just crash the arm.",
  "hero_hint_actions": [
   "Draw a digit",
-  "tune the firmware",
-  "steer the arm"
+  "click any box",
+  "move your mouse"
  ],
  "about_site": "The home page runs a live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained int8 network tells the arm which block to pick; tune the firmware or steer the arm yourself.",
  "featured": [
