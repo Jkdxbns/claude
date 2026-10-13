@@ -233,6 +233,39 @@ function renderContact(){
     if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(P.email).then(ok,fallback);else fallback();
   });
 }
+/* contact form: posts to the form-to-email service in content.js (Web3Forms); hidden until a key is set */
+function renderContactForm(){
+  var F=C.person.contact_form,form=$("cf"),open=$("cfOpen");
+  if(!form||!open||!F||!F.access_key)return;
+  open.hidden=false;
+  var mail=$("cfMail");mail.textContent=C.person.email;mail.href="mailto:"+C.person.email;
+  var topic=F.topics[F.topics.length-1],chips=$("cfTopics");
+  function drawChips(){chips.innerHTML=F.topics.map(function(t){return '<button type="button" class="chip" aria-pressed="'+(t===topic)+'">'+esc(t)+'</button>'}).join("");
+    chips.querySelectorAll("button").forEach(function(b,i){b.addEventListener("click",function(){topic=F.topics[i];drawChips()})})}
+  drawChips();
+  open.addEventListener("click",function(){
+    var show=form.hidden;form.hidden=!show;open.setAttribute("aria-expanded",String(show));open.textContent=show?"Close the form ×":"Connect with me →";
+    if(show){form.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});setTimeout(function(){form.elements.name.focus({preventScroll:true})},reduce?0:350)}
+  });
+  var status=$("cfStatus"),btn=$("cfBtn");
+  function say(msg,kind){status.textContent=msg;status.className="cf-status"+(kind?" "+kind:"")}
+  form.addEventListener("submit",function(e){
+    e.preventDefault();
+    if(form.elements.botcheck.checked)return;   // bots fill the hidden box; people never see it
+    var v={};["name","email","subject","message"].forEach(function(k){v[k]=form.elements[k].value.trim()});
+    if(!v.name||!v.subject||!v.message){say("Please fill in your name, a subject and a message.","err");return}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.email)){say("That email address doesn't look right.","err");form.elements.email.focus();return}
+    btn.disabled=true;btn.textContent="Sending…";say("");
+    fetch(F.endpoint,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},
+      body:JSON.stringify({access_key:F.access_key,subject:"[Portfolio · "+topic+"] "+v.subject,from_name:v.name+" via justinmascarenhas.com",
+        name:v.name,email:v.email,topic:topic,message:v.message})})
+      .then(function(r){return r.json().catch(function(){return {}})})
+      .then(function(j){if(!j.success)throw 0;form.reset();topic=F.topics[F.topics.length-1];drawChips();
+        say("Thanks, "+v.name.split(" ")[0]+". Your message is on its way; I'll reply to "+v.email+".","ok")})
+      .catch(function(){say("That didn't send. Please email me directly at "+C.person.email+".","err")})
+      .then(function(){btn.disabled=false;btn.textContent="Send message"});
+  });
+}
 /* hero hint: a "Try it" strip with the actions in bold so the demo isn't missed */
 function renderHint(){
   var el=$("heroHint");if(!el||!C.hero_hint)return;
@@ -310,7 +343,7 @@ function observe(scope){scope.querySelectorAll(".rise:not(.in)").forEach(functio
 
 root.classList.add("js");
 renderFeatured();renderOngoing();renderArchive();renderChips();renderAllGrid();wireSearch();
-renderExp();renderEdu();renderAwards();renderSkills();renderCv();renderAboutPage();renderContact();renderHint();
+renderExp();renderEdu();renderAwards();renderSkills();renderCv();renderAboutPage();renderContact();renderContactForm();renderHint();
 observe(document);
 seen=true;
 window.addEventListener("jm-focus",function(){renderRes()});
