@@ -1,5 +1,5 @@
 /* Site content: the single source of truth for every word, number, date and link.
-   Edit this object, then reload. See README.md. */
+   Edit this object, then reload. */
 window.JM_CONTENT = {
  "_rules": "Single source of truth for all text on the site. Do not add, round, or embellish any claim, metric, date or skill. If something is missing, leave it out.",
  "person": {
