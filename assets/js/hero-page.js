@@ -66,6 +66,23 @@
   }
   window.JM_setFocus=function(f){setFocus(f,true)};
 
+  /* layout stability: reserve the height of the longest focus sub-text and the width of the longest
+     Resume label at the current page width, so switching focus never moves anything below or beside them */
+  function reserveSpace(){
+    var sub=document.getElementById("sub"),rb=document.getElementById("resume");
+    var curS=sub.textContent,curR=rb.textContent,wasHidden=rb.hidden,maxH=0,maxW=0;
+    sub.style.minHeight="";rb.style.minWidth="";rb.hidden=false;
+    Object.keys(T).forEach(function(k){
+      sub.textContent=T[k].sub;maxH=Math.max(maxH,sub.getBoundingClientRect().height);
+      rb.textContent="Resume · "+T[k].label+" (PDF)";maxW=Math.max(maxW,rb.getBoundingClientRect().width);
+    });
+    sub.textContent=curS;rb.textContent=curR;rb.hidden=wasHidden;
+    sub.style.minHeight=Math.ceil(maxH)+"px";rb.style.minWidth=Math.ceil(maxW)+"px";
+  }
+  reserveSpace();
+  var rsT;addEventListener("resize",function(){clearTimeout(rsT);rsT=setTimeout(reserveSpace,120)});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(reserveSpace);
+
   /* live status lights: Perceive while the network computes, Move while the arm moves, Command flickers on every TX */
   var chipAI=document.querySelector('.layer[data-l="ai"]'),chipFW=document.querySelector('.layer[data-l="fw"]'),chipRB=document.querySelector('.layer[data-l="rb"]');
   (function chainLoop(){

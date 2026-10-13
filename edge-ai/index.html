@@ -59,8 +59,8 @@
     <div class="side">
       <div class="ctas">
         <a class="btn primary" href="#projects">View projects</a>
-        <a class="btn" id="resume" href="/assets/resume/Justin_Mascarenhas_Resume_Edge_AI.pdf" target="_blank" rel="noopener" hidden>Resume · Edge AI (PDF)</a>
         <a class="btn" href="#contact">Contact</a>
+        <a class="btn" id="resume" href="/assets/resume/Justin_Mascarenhas_Resume_Edge_AI.pdf" target="_blank" rel="noopener" hidden>Resume · Edge AI (PDF)</a>
       </div>
       <div><div class="label" style="margin-bottom:6px">Focus</div>
         <div class="fsw" role="group" aria-label="Choose a focus">
@@ -81,7 +81,7 @@
   <div class="board">
     <!-- PERCEIVE: Edge AI -->
     <div class="panel" id="p-edge">
-      <div class="phd"><span><b>Perceive</b> · <span class="tag">my QAT int8 MLP</span> <span class="vo">view only</span></span>
+      <div class="phd"><span><b>Perceive</b> · <span class="tag">my QAT int8 MLP</span></span>
         <div class="seg" role="group" aria-label="Execution model"><button type="button" data-m="serial" aria-pressed="false">Serial</button><button type="button" data-m="parallel" aria-pressed="true">64 lanes</button></div></div>
       <div class="disp">
         <div class="edge">
@@ -101,7 +101,7 @@
 
     <!-- MOVE: robot arm -->
     <div class="panel" id="p-arm">
-      <div class="phd"><span><b>Move</b> · <span class="tag">2-link IK, collision-checked</span></span><span class="hdr-r"><span class="vo">view only</span><span id="hint">steer · click a block</span><button class="btn retry" id="retryBtn" type="button" title="Re-home the arm and retry the last rejected pick">↺ Retry</button></span></div>
+      <div class="phd"><span><b>Move</b> · <span class="tag">2-link IK, collision-checked</span></span><span class="hdr-r"><span id="hint">steer · click a block</span><button class="btn retry" id="retryBtn" type="button" title="Re-home the arm and retry the last rejected pick">↺ Retry</button></span></div>
       <div class="disp" id="stage">
         <canvas id="cv" role="img" aria-label="Two-link robot arm with numbered blocks. The block picked is the digit classified by the Edge AI panel; firmware limits shade the reachable workspace."></canvas>
         <div class="warn" id="warn" role="status"><b id="warnT">COLLISION WARNING · CANNOT MOVE</b><span id="warnWhy"></span></div>
@@ -110,7 +110,7 @@
 
     <!-- COMMAND: firmware -->
     <div class="panel" id="p-fw">
-      <div class="phd"><span><b>Command</b> · <span class="tag">Arduino servo firmware</span></span><span><span class="vo">view only</span> 50 Hz PWM · 115200 8N1</span></div>
+      <div class="phd"><span><b>Command</b> · <span class="tag">Arduino servo firmware</span></span><span> 50 Hz PWM · 115200 8N1</span></div>
       <div class="fwgrid">
         <div>
           <div class="tx"><span class="k">TX →arduino</span><b id="txCmd">idle</b><span class="note" id="txNote">115200 8N1</span></div>
