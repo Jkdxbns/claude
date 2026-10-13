@@ -10,7 +10,8 @@ window.JM_CONTENT = {
   "location": "Dallas–Fort Worth, TX",
   "domain": "justinmascarenhas.com",
   "degree_line": "M.S. Computer Engineering, Rochester Institute of Technology (graduated May 2026)",
-  "contact_intro": "Open to embedded firmware, robotics and edge AI roles: building systems where the model, the firmware and the arm work as one. Based in Dallas–Fort Worth, TX."
+  "contact_intro": "Open to embedded firmware, robotics and edge AI roles: building systems where the model, the firmware and the arm work as one. Based in Dallas–Fort Worth, TX.",
+  "photo": "/assets/img/me.webp"
  },
  "about": "I am a computer engineer who works where models meet hardware: bare-metal firmware on Cortex-M, TensorRT and CUDA on NVIDIA Jetson, and robots that close the loop between the two. I finished my M.S. in Computer Engineering at RIT in May 2026.",
  "tracks": {
@@ -29,9 +30,7 @@ window.JM_CONTENT = {
     "asr",
     "frame-sim",
     "gpt2",
-    "robocon",
-    "mpi-neuron",
-    "mpi-raytracer"
+    "robocon"
    ],
    "resume_pdf": "/assets/resume/Justin_Mascarenhas_Resume_System.pdf",
    "headline": "I build robots end to end: the model that sees, the firmware that drives, the arm that moves.",
@@ -54,8 +53,6 @@ window.JM_CONTENT = {
     "slm-compression",
     "asr",
     "frame-sim",
-    "mpi-neuron",
-    "mpi-raytracer",
     "gpt2"
    ],
    "resume_pdf": "/assets/resume/Justin_Mascarenhas_Resume_Embedded.pdf"
@@ -77,9 +74,7 @@ window.JM_CONTENT = {
     "qat-mnist",
     "slm-compression",
     "gpt2",
-    "robocon",
-    "mpi-neuron",
-    "mpi-raytracer"
+    "robocon"
    ],
    "resume_pdf": "/assets/resume/Justin_Mascarenhas_Resume_Robotics.pdf"
   },
@@ -99,8 +94,6 @@ window.JM_CONTENT = {
     "turret",
     "stm32-temp",
     "ros-arm",
-    "mpi-neuron",
-    "mpi-raytracer",
     "frame-sim",
     "robocon"
    ],
@@ -689,75 +682,6 @@ window.JM_CONTENT = {
     "OpenGL"
    ],
    "github": "https://github.com/Jkdxbns/Frame-Simulator"
-  },
-  {
-   "id": "mpi-neuron",
-   "title": "MPI Hodgkin-Huxley Neuron Simulation",
-   "period": "MPI · SLURM",
-   "tags": [
-    "hpc"
-   ],
-   "blurb": "Distributed dendrite computation across MPI workers on a SLURM cluster, with scaling and load-imbalance analysis.",
-   "spec": [
-    [
-     "Speedup",
-     "10.49",
-     "× (12 workers)"
-    ],
-    [
-     "Imbalance penalty",
-     "up to 65",
-     "%"
-    ]
-   ],
-   "bars": [],
-   "bullets": [
-    "Implemented distributed dendrite computations across MPI workers with synchronous soma updates on a SLURM-managed cluster.",
-    "Achieved up to 10.49× speedup with 12 slave processes; characterized scaling behavior across dendrite counts and compartment depths.",
-    "Identified load imbalance effects showing up to 65% performance degradation under uneven work distribution."
-   ],
-   "stack": [
-    "C",
-    "MPI",
-    "SLURM"
-   ],
-   "github": null
-  },
-  {
-   "id": "mpi-raytracer",
-   "title": "Parallel Ray Tracer with MPI Scheduling",
-   "period": "MPI",
-   "tags": [
-    "hpc"
-   ],
-   "blurb": "Four work-distribution strategies for a 5000×5000 render, benchmarked against each other.",
-   "spec": [
-    [
-     "Speedup",
-     "30",
-     "× (55 processes)"
-    ],
-    [
-     "Image",
-     "5000×5000",
-     "px"
-    ],
-    [
-     "Strategies",
-     "4",
-     ""
-    ]
-   ],
-   "bars": [],
-   "bullets": [
-    "Implemented and benchmarked four parallel work distribution strategies (static strip/block/cyclic, dynamic task queue) for rendering 5000×5000 pixel scenes using MPI.",
-    "Achieved up to 30× speedup with static strip partitioning (55 processes); demonstrated dynamic task queue outperformed all static methods under unpredictable workloads."
-   ],
-   "stack": [
-    "C",
-    "MPI"
-   ],
-   "github": null
   }
  ],
  "in_progress": [
@@ -994,15 +918,13 @@ window.JM_CONTENT = {
   "Firmware",
   "Edge AI",
   "Robotics",
-  "ML",
-  "HPC"
+  "ML"
  ],
  "filter_tag_map": {
   "Firmware": "firmware",
   "Edge AI": "edge-ai",
   "Robotics": "robotics",
-  "ML": "ml",
-  "HPC": "hpc"
+  "ML": "ml"
  },
  "images": {
   "ready": [
@@ -1018,8 +940,6 @@ window.JM_CONTENT = {
    "turret",
    "robocon",
    "frame-sim",
-   "mpi-neuron",
-   "mpi-raytracer",
    "telemetry-gateway",
    "serial-data-plotter"
   ],
@@ -1030,5 +950,14 @@ window.JM_CONTENT = {
    "cuda-vgg16": "/assets/video/cuda-vgg16.mp4"
   }
  },
- "hero_hint": "A live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained int8 network tells the arm which block to pick; tune the firmware below or steer the arm yourself."
+ "hero_hint": "A live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained int8 network tells the arm which block to pick; tune the firmware below or steer the arm yourself.",
+ "about_site": "The home page runs a live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained int8 network tells the arm which block to pick; tune the firmware or steer the arm yourself.",
+ "featured": [
+  "coffin",
+  "stm32-temp",
+  "qat-mnist",
+  "turret",
+  "cuda-vgg16",
+  "slm-compression"
+ ]
 };

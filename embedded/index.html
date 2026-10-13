@@ -26,7 +26,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
-<link rel="stylesheet" href="/assets/css/site.css?v=a95a9db8">
+<link rel="stylesheet" href="/assets/css/site.css?v=30cde2d3">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Person","name":"Justin Mascarenhas","url":"https://justinmascarenhas.com/","sameAs":["https://www.linkedin.com/in/justinmascarenhas/","https://github.com/Jkdxbns"],"alumniOf":{"@type":"CollegeOrUniversity","name":"Rochester Institute of Technology"}}
 </script>
@@ -42,7 +42,7 @@
   <div class="top-in">
     <a class="mark" href="/" aria-label="Justin Mascarenhas, home">JM</a>
     <nav class="nav" aria-label="Sections">
-      <a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#about">About</a><a href="#contact">Contact</a>
+      <a href="/projects/">Projects</a><a href="/cv/">CV</a><a href="/about/">About</a><a href="/#contact">Contact</a>
     </nav>
     <button class="btn tbtn" id="themeBtn" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg></button>
   </div>
@@ -60,7 +60,7 @@
       <div class="ctas">
         <a class="btn" id="resume" href="#contact">Resumes (PDF)</a>
         <a class="btn cta-contact" href="#contact">Contact</a>
-        <a class="btn" href="#projects">View projects</a>
+        <a class="btn" href="/projects/">View projects</a>
       </div>
       <div><div class="label" style="margin-bottom:6px">Focus</div>
         <div class="fsw" role="group" aria-label="Choose a focus">
@@ -131,41 +131,19 @@
   </div>
   </div>
 
-  <section class="sec" id="projects" aria-labelledby="h-sel">
-    <div class="shd"><h2 id="h-sel">Selected work</h2><span class="label" id="selMeta"></span></div>
-    <div class="cards" id="selGrid"></div>
+  <section class="sec" id="featured" aria-labelledby="h-feat">
+    <div class="shd"><h2 id="h-feat">Featured projects</h2><a class="label lk" href="/projects/">All projects →</a></div>
+    <div class="cards" id="featGrid"></div>
   </section>
 
-  <section class="sec" id="all-projects" aria-labelledby="h-all">
-    <div class="shd"><h2 id="h-all">All projects</h2><span class="label" id="allMeta"></span></div>
-    <div class="chips" id="chips" role="group" aria-label="Filter projects"></div>
-    <div class="idx" id="allList" aria-live="polite"></div>
-    <div class="lower">
-      <div class="box"><h3 class="sub">Now building</h3><div id="nowB"></div></div>
-      <div class="box"><h3 class="sub">Archive</h3><div id="arch"></div></div>
-    </div>
+  <section class="sec" id="ongoing-sec" aria-labelledby="h-on">
+    <div class="shd"><h2 id="h-on">Ongoing</h2></div>
+    <div class="box" id="ongoing"></div>
   </section>
 
-  <section class="sec" id="experience" aria-labelledby="h-exp">
-    <div class="shd"><h2 id="h-exp">Experience</h2></div>
-    <div id="exp"></div>
-  </section>
-
-  <section class="sec" id="about" aria-labelledby="h-about">
-    <div class="shd"><h2 id="h-about">About</h2></div>
-    <div class="about">
-      <div>
-        <p class="about-text" id="aboutText"></p>
-        <h3 class="sub">Education</h3>
-        <div class="edu" id="edu"></div>
-      </div>
-      <div>
-        <h3 class="sub">Awards</h3>
-        <ul class="awards" id="awards"></ul>
-        <h3 class="sub">Skills</h3>
-        <table class="skills" id="skills"></table>
-      </div>
-    </div>
+  <section class="sec" id="skills-sec" aria-labelledby="h-sk">
+    <div class="shd"><h2 id="h-sk">Skills</h2><a class="label lk" href="/cv/">Full CV →</a></div>
+    <table class="skills" data-skills></table>
   </section>
 
   <section class="sec" id="contact" aria-labelledby="h-contact">
@@ -202,12 +180,12 @@
 
 <noscript><p class="wrap">The live demos and project lists need JavaScript. Email: jmascarenhas1998@gmail.com · <a href="https://www.linkedin.com/in/justinmascarenhas/">LinkedIn</a> · <a href="https://github.com/Jkdxbns">GitHub</a></p></noscript>
 
-<script src="/assets/data/content.js?v=899ba083"></script>
+<script src="/assets/data/content.js?v=20e68c17"></script>
 <script src="/assets/data/qat-weights.js?v=249c9497"></script>
 <script src="/assets/js/theme.js?v=f0f8a6a8"></script>
 <script src="/assets/js/hero-page.js?v=1602d59d"></script>
 <script src="/assets/js/hero-robot.js?v=b49459ee"></script>
 <script src="/assets/js/hero-edge.js?v=cad876bd"></script>
-<script src="/assets/js/site.js?v=72c68ffb"></script>
+<script src="/assets/js/site.js?v=68d9a614"></script>
 </body>
 </html>

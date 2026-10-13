@@ -272,11 +272,12 @@ h3.sub{font-family:var(--f-mono);font-size:12px;font-weight:500;letter-spacing:.
 .lnk{font:500 12px var(--f-mono);color:var(--accent);text-decoration:none;display:inline-block;margin-top:8px}
 .lnk:hover{text-decoration:underline;text-underline-offset:3px}
 
-/* drawer: side panel, bottom sheet on phones */
-.dr-back{position:fixed;inset:0;z-index:40;background:color-mix(in srgb,#000 38%,transparent);opacity:0;transition:opacity .25s}
+/* project tile: centred over a dimmed, blurred page */
+.dr-back{position:fixed;inset:0;z-index:40;background:color-mix(in srgb,#000 55%,transparent);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);opacity:0;transition:opacity .22s}
 .dr-back.open{opacity:1}
-.drawer{position:fixed;z-index:41;top:0;right:0;bottom:0;width:min(600px,100%);background:var(--panel);border-left:1px solid var(--line);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s ease;outline:none}
-.drawer.open{transform:none}
+.drawer{position:fixed;z-index:41;left:50%;top:50%;width:min(760px,calc(100vw - 32px));max-height:min(88vh,920px);background:var(--panel);border:1px solid var(--line);border-radius:14px;display:flex;flex-direction:column;overflow:hidden;outline:none;
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.55);transform:translate(-50%,-47%) scale(.97);opacity:0;transition:transform .26s cubic-bezier(.2,.7,.2,1),opacity .2s}
+.drawer.open{transform:translate(-50%,-50%);opacity:1}
 .dr-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:48px;padding:0 14px;border-bottom:1px solid var(--line);flex:none}
 .dr-x{font-size:16px;line-height:1;padding:5px 10px}
 .dr-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:16px 18px 32px;display:grid;grid-auto-rows:max-content;gap:18px;align-content:start}
@@ -299,11 +300,9 @@ h3.sub{font-family:var(--f-mono);font-size:12px;font-weight:500;letter-spacing:.
 .drawer.bars-on .brow .bt i{width:var(--w)}
 .ghb{justify-self:start;font:500 13px var(--f-sans);padding:8px 14px}
 @media (max-width:640px){
-  .drawer{top:auto;left:0;width:100%;max-height:88vh;border-left:0;border-top:1px solid var(--line);border-radius:14px 14px 0 0;transform:translateY(100%)}
-  .drawer.open{transform:none}
-  .dr-hd::before{content:"";position:absolute;left:50%;top:6px;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:var(--line)}
-  .dr-hd{position:relative}
+  .drawer{width:calc(100vw - 20px);max-height:90vh}
   .brow{grid-template-columns:minmax(0,96px) minmax(0,1fr) 64px}
+}
 }
 
 /* experience timeline */
@@ -377,3 +376,45 @@ a.ct-card:hover,.ct-card.ct-click:hover,.ct-card:focus-within{border-color:var(-
 .phd{flex-wrap:wrap;row-gap:6px;padding-block:6px}
 @media (max-width:520px){.phd{padding-block:8px;white-space:normal}.phd>span:first-child{white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
+
+/* sub-pages: Projects, CV, About */
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.lk{text-decoration:none;color:var(--accent)}
+.lk:hover{text-decoration:underline;text-underline-offset:3px}
+.nav a[aria-current="page"]{color:var(--fg);border-bottom:1px solid var(--accent)}
+.page .pg-hd{padding-block:44px 6px;display:grid;gap:8px}
+.page .pg-hd h1{margin:0}
+.ptools{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin:26px 0 8px}
+.ptools .chips{margin:0}
+.search input{font:14px var(--f-sans);color:var(--fg);background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 12px;width:min(320px,100%)}
+.search input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+@media (max-width:640px){.search,.search input{width:100%}}
+.meta-line{margin:6px 0 16px}
+#ongoing .nowb+.nowb,#nowB .nowb+.nowb{margin-top:16px}
+#arch .arch+.arch{margin-top:14px}
+.cv-pdf{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.pdfbtn{font:600 14px var(--f-sans);padding:10px 16px;border-radius:8px;border-color:var(--accent);color:var(--accent)}
+.pdfbtn:hover{background:var(--accent-soft)}
+.cvproj{list-style:none;margin:0;padding:0;border-top:1px solid var(--fg)}
+.cvproj li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;padding:12px 2px;border-bottom:1px solid var(--line)}
+.cvproj .cvp{font:600 15.5px var(--f-sans);text-align:left;color:var(--fg);background:none;border:0;padding:0;cursor:pointer}
+.cvproj .cvp:hover{color:var(--accent)}
+.cvproj .cvp-meta{font:12px var(--f-mono);color:var(--muted);white-space:nowrap}
+.cvproj p{grid-column:1/-1;margin:2px 0 0;color:var(--muted);font-size:14px;line-height:1.55}
+.edu-2{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media (max-width:760px){.edu-2{grid-template-columns:minmax(0,1fr)}}
+.me{display:grid;grid-template-columns:260px minmax(0,1fr);gap:36px;align-items:start;margin-top:26px}
+@media (max-width:760px){.me{grid-template-columns:minmax(0,1fr);gap:22px}.me-photo{max-width:220px}}
+.me-photo{aspect-ratio:4/5;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;place-items:center;
+  background-color:var(--panel);background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);background-size:14px 14px}
+.me-photo .mono{font:600 56px var(--f-mono);color:var(--accent);letter-spacing:.02em}
+.me-photo.has{background:none}
+.me-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.me-text .about-text{margin-bottom:14px}
+.me-open{color:var(--muted);margin:0 0 18px;max-width:62ch;line-height:1.6}
+.facts{display:grid;gap:8px;margin:0 0 20px}
+.facts div{display:grid;grid-template-columns:130px minmax(0,1fr);gap:12px;padding-bottom:8px;border-bottom:1px dotted var(--line)}
+.facts dt{font:500 11.5px var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding-top:2px}
+.facts dd{margin:0}
+.me-links{display:flex;flex-wrap:wrap;gap:8px}
+.me-links .btn{font:500 14px var(--f-sans);padding:9px 14px;border-radius:8px}

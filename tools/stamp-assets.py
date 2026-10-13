@@ -6,7 +6,8 @@ with a cached old script or stylesheet (GitHub Pages caches files for 10 minutes
 """
 import hashlib, pathlib, re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-PAGES = ["index.html", "embedded/index.html", "robotics/index.html", "edge-ai/index.html", "404.html"]
+PAGES = ["index.html", "embedded/index.html", "robotics/index.html", "edge-ai/index.html", "404.html",
+         "projects/index.html", "cv/index.html", "about/index.html"]
 pat = re.compile(r'((?:src|href)=")(/assets/(?:css|js|data)/[^"?]+)(?:\?v=[0-9a-f]+)?(")')
 def stamp(m):
     f = ROOT / m.group(2).lstrip("/")
