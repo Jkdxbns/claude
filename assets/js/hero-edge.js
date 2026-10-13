@@ -30,6 +30,7 @@ function infer(x){
 /* ---------- draw pad ---------- */
 var pad=document.getElementById("pad"),padCv=document.getElementById("padCv"),pctx=padCv.getContext("2d");
 var ink=document.createElement("canvas"),ictx=ink.getContext("2d"),PS=0,dpr=1,drawing=false,lastPt=null,inkAny=false,procTimer=0;
+var showPx=false;  // false: show the ink being drawn; true: show the 16x16 uint8 input the network reads
 function sizePad(){
   var r=pad.getBoundingClientRect();if(!r.width)return;dpr=Math.min(devicePixelRatio||1,2);
   var old=document.createElement("canvas");old.width=ink.width;old.height=ink.height;if(ink.width)old.getContext("2d").drawImage(ink,0,0);
@@ -42,6 +43,12 @@ function drawPad(){
   pctx.setTransform(1,0,0,1,0,0);pctx.clearRect(0,0,padCv.width,padCv.height);
   pctx.strokeStyle=col.grid;pctx.lineWidth=1;var n=8,st=padCv.width/n;
   for(var i=1;i<n;i++){pctx.beginPath();pctx.moveTo(i*st+.5,0);pctx.lineTo(i*st+.5,padCv.height);pctx.moveTo(0,i*st+.5);pctx.lineTo(padCv.width,i*st+.5);pctx.stroke()}
+  if(showPx&&X){
+    var cs=padCv.width/16;
+    for(var k=0;k<256;k++){if(!X[k])continue;pctx.fillStyle=rgba(col.fg,X[k]/255);pctx.fillRect((k%16)*cs,Math.floor(k/16)*cs,cs+.5,cs+.5)}
+    if(anim&&anim.phase==="fc1"){var q=anim.cur.i;pctx.strokeStyle=col.warm;pctx.lineWidth=2*dpr;pctx.strokeRect((q%16)*cs+dpr,Math.floor(q/16)*cs+dpr,cs-2*dpr,cs-2*dpr)}
+    return;
+  }
   // ink is stored as alpha; tint it with the theme colour
   var tmp=document.createElement("canvas");tmp.width=ink.width;tmp.height=ink.height;var t=tmp.getContext("2d");
   t.drawImage(ink,0,0);t.globalCompositeOperation="source-in";t.fillStyle=col.fg;t.fillRect(0,0,tmp.width,tmp.height);
@@ -49,7 +56,7 @@ function drawPad(){
 }
 function pt(e){var r=padCv.getBoundingClientRect();return {x:(e.clientX-r.left)*dpr,y:(e.clientY-r.top)*dpr}}
 pad.addEventListener("pointerdown",function(e){
-  e.preventDefault();pad.setPointerCapture(e.pointerId);drawing=true;lastPt=pt(e);clearTimeout(procTimer);stopAnim();
+  e.preventDefault();pad.setPointerCapture(e.pointerId);drawing=true;lastPt=pt(e);clearTimeout(procTimer);stopAnim();setPx(false);
   if(!inkAny){ictx.clearRect(0,0,ink.width,ink.height)}
   if(window.JM_robot)JM_robot.bump();var co=document.getElementById("cmdOut");if(co)co.textContent="";curSample=null;inkAny=true;document.getElementById("padPh").style.opacity=0;stroke(lastPt,lastPt);
 });
@@ -99,37 +106,25 @@ var P1=new Int32Array(64),P2=new Int32Array(10),HV=null;   // partial sums shown
 var anim=null; // {phase,start,count,cur:{i,o}}
 function sizeNet(){
   var r=net.getBoundingClientRect(),w=r.width,h=r.height;if(!w||!h)return;dpr=Math.min(devicePixelRatio||1,2);
-  if(w/h>1.35){var outW=Math.min(90,Math.max(64,w*0.22)),gap=14,g=Math.min(h-24,(w-outW-2*gap)/2,170);
-    L={w:w,g:g,gap:gap,y0:18,xi:0,xh:g+gap,narrow:true};L.xo=2*g+2*gap;L.yo=18;L.ow=w-L.xo;L.oh=g;L.h=h;}
-  else{var gp=14,gg=Math.min((w-gp)/2,h*0.5,160),off=Math.max(0,(w-(2*gg+gp))/2);
-    L={w:w,g:gg,gap:gp,y0:18,xi:off,xh:off+gg+gp,narrow:w<380};L.xo=0;L.yo=L.y0+gg+26;L.ow=w;L.oh=Math.max(60,h-L.yo-2);L.h=h;}
+  var gap=18,g=Math.max(60,Math.min(h-24,(w-gap)*0.55,170));
+  L={w:w,g:g,gap:gap,y0:18,xh:0,narrow:w<330};L.xo=g+gap;L.yo=18;L.ow=w-L.xo;L.oh=g;L.h=h;
   netCv.width=Math.round(w*dpr);netCv.height=Math.round(h*dpr);netCv.style.height=h+"px";nctx.setTransform(dpr,0,0,dpr,0,0);drawNet();
 }
-function inC(i){var c=L.g/16;return {x:L.xi+(i%16+.5)*c,y:L.y0+(Math.floor(i/16)+.5)*c}}
 function hC(o){var c=L.g/8;return {x:L.xh+(o%8+.5)*c,y:L.y0+(Math.floor(o/8)+.5)*c}}
 function oC(o){var r=L.oh/10;return {x:L.xo+14,y:L.yo+(o+.5)*r}}
 function drawNet(){
   if(!L.w||!col.fg)return;var c=nctx,i,o,p;
   c.clearRect(0,0,L.w,L.h);
   c.font="10.5px 'IBM Plex Mono', ui-monospace, monospace";c.fillStyle=col.muted;c.textAlign="left";
-  c.fillText("x · 16×16 uint8",L.xi,12);if(anim&&anim.phase==="requant"){c.fillStyle=col.warm;c.fillText(L.narrow?"ReLU → uint8":"ReLU · rescale → uint8",L.xh,12);c.fillStyle=col.muted}else c.fillText(L.narrow?"fc1 · 64 → uint8":"fc1 · 64 int32 → uint8",L.xh,12);c.fillText(L.yo>20?"fc2 · 10 logits":"fc2",L.xo,L.yo>20?L.yo-10:12);
+  if(anim&&anim.phase==="requant"){c.fillStyle=col.warm;c.fillText(L.narrow?"ReLU → uint8":"ReLU · rescale → uint8",L.xh,12);c.fillStyle=col.muted}else c.fillText(L.narrow?"fc1 · 64 → uint8":"fc1 · 64 int32 → uint8",L.xh,12);c.fillText(L.ow>150?"fc2 · 10 logits":"fc2",L.xo,12);
   var ph=anim?anim.phase:"done";
   // wires for the current step
   if(anim&&X){
     c.lineWidth=1;
-    if(ph==="fc1"){var a=inC(anim.cur.i);
-      if(mode==="serial"){p=hC(anim.cur.o);c.strokeStyle=rgba(col.accent,.8);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(p.x,p.y);c.stroke()}
-      else{c.strokeStyle=rgba(col.accent,.16);for(o=0;o<64;o++){p=hC(o);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(p.x,p.y);c.stroke()}}}
     if(ph==="fc2"){var b=hC(anim.cur.i);
       if(mode==="serial"){p=oC(anim.cur.o);c.strokeStyle=rgba(col.accent,.8);c.beginPath();c.moveTo(b.x,b.y);c.lineTo(p.x-10,p.y);c.stroke()}
       else{c.strokeStyle=rgba(col.accent,.25);for(o=0;o<10;o++){p=oC(o);c.beginPath();c.moveTo(b.x,b.y);c.lineTo(p.x-10,p.y);c.stroke()}}}
   }
-  // input grid
-  var cs=L.g/16;
-  c.fillStyle=col.bg;c.fillRect(L.xi,L.y0,L.g,L.g);
-  if(X)for(i=0;i<256;i++){if(!X[i])continue;c.fillStyle=rgba(col.fg,X[i]/255);c.fillRect(L.xi+(i%16)*cs,L.y0+Math.floor(i/16)*cs,cs+.3,cs+.3)}
-  c.strokeStyle=col.line;c.strokeRect(L.xi+.5,L.y0+.5,L.g-1,L.g-1);
-  if(anim&&ph==="fc1"){var q=anim.cur.i;c.strokeStyle=col.warm;c.lineWidth=1.5;c.strokeRect(L.xi+(q%16)*cs,L.y0+Math.floor(q/16)*cs,cs,cs)}
   // hidden grid
   var hs=L.g/8,max1=1;if(R)for(o=0;o<64;o++)max1=Math.max(max1,R.a1[o]);
   var maxH=1;if(R)for(o=0;o<64;o++)maxH=Math.max(maxH,R.h[o]);
@@ -157,14 +152,15 @@ function drawNet(){
 
 /* ---------- animation ---------- */
 var DUR={serial:{fc1:3600,requant:450,fc2:1100},parallel:{fc1:1500,requant:450,fc2:700}};
-function setInput(x){X=x;R=x?infer(x):null;showPred(false);updateText();drawNet()}
-function stopAnim(){anim=null;drawNet()}
+function setPx(on){showPx=on;pad.classList.toggle("px",on);drawPad()}
+function setInput(x){X=x;R=x?infer(x):null;showPred(false);updateText();drawNet();setPx(!!x)}
+function stopAnim(){anim=null;drawNet();drawPad()}
 var notify=false;
 function run(np){
   notify=!!np;if(!X)return;if(reduce){finish();return}
   P1.fill(0);P2.fill(0);anim={phase:"fc1",start:performance.now(),count:0,cur:{i:0,o:0}};showPred(false);
 }
-function finish(){anim=null;if(R){P1.set(R.a1);P2.set(R.a2)}showPred(true);updateText();drawNet();if(notify&&R){notify=false;if(window.JM_robot)JM_robot.pickDigit(R.pred,R.pr[R.pred])}}
+function finish(){anim=null;if(R){P1.set(R.a1);P2.set(R.a2)}showPred(true);updateText();drawNet();drawPad();if(notify&&R){notify=false;if(window.JM_robot)JM_robot.pickDigit(R.pred,R.pr[R.pred])}}
 function step(now){
   if(anim&&X){
     var d=DUR[mode],el=now-anim.start,ph=anim.phase,tot,target,k;
@@ -184,7 +180,7 @@ function step(now){
       }
       anim.count=target;if(target>=tot){finish()}
     }
-    if(anim){updateText();drawNet()}
+    if(anim){updateText();drawNet();if(anim&&anim.phase==="fc1")drawPad()}
   }
   requestAnimationFrame(step);
 }
@@ -236,8 +232,7 @@ net.addEventListener("pointermove",function(e){
   var r=net.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,html=null,map=false;
   if(y>L.yo&&y<L.yo+L.oh&&x>L.xo&&x<L.xo+L.ow&&R){var dd=Math.floor((y-L.yo)/(L.oh/10));html="class "+dd+" · acc "+fmt(R.a2[dd])+" (int32)<br>logit "+R.lg[dd].toFixed(2)+" · p = "+(R.pr[dd]*100).toFixed(1)+"%"}
   else if(y>L.y0&&y<L.y0+L.g){
-    if(x>L.xi&&x<L.xi+L.g&&X){var i=Math.floor((y-L.y0)/(L.g/16))*16+Math.floor((x-L.xi)/(L.g/16));html="x["+i+"] = "+X[i]+" (uint8)"}
-    else if(x>L.xh&&x<L.xh+L.g){var o=Math.floor((y-L.y0)/(L.g/8))*8+Math.floor((x-L.xh)/(L.g/8));map=true;weightMap(o);
+    if(x>L.xh&&x<L.xh+L.g){var o=Math.floor((y-L.y0)/(L.g/8))*8+Math.floor((x-L.xh)/(L.g/8));map=true;weightMap(o);
       html="neuron "+o+" · its 256 int8 weights"+(R?"<br>acc "+fmt(R.a1[o])+" (int32) → h = "+R.h[o]+" (uint8)":"")}
   }
   if(!html){tip.classList.remove("on");return}
