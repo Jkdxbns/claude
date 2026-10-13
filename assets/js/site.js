@@ -209,7 +209,13 @@ function renderContact(){
     if(navigator.clipboard&&window.isSecureContext)navigator.clipboard.writeText(P.email).then(ok,fallback);else fallback();
   });
 }
-function renderHint(){var el=$("heroHint");if(el&&C.hero_hint)el.textContent=C.hero_hint}
+/* hero hint: a "Try it" strip with the actions in bold so the demo isn't missed */
+function renderHint(){
+  var el=$("heroHint");if(!el||!C.hero_hint)return;
+  var h=esc(C.hero_hint);
+  (C.hero_hint_actions||[]).forEach(function(a){h=h.replace(esc(a),'<b>'+esc(a)+'</b>')});
+  el.innerHTML='<span class="try">Try it</span><span>'+h+'</span>';
+}
 
 /* ---------- project tile: centred, dimmed background, × top right ---------- */
 var back=$("drBack"),dr=$("drawer"),drBody=$("drBody"),opener=null,closeT=0;

@@ -988,6 +988,11 @@ window.JM_CONTENT = {
   }
  },
  "hero_hint": "A live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained int8 network tells the arm which block to pick; tune the firmware below or steer the arm yourself.",
+ "hero_hint_actions": [
+  "Draw a digit",
+  "tune the firmware",
+  "steer the arm"
+ ],
  "about_site": "The home page runs a live browser model of COFFIN, my M.S. capstone arm. Draw a digit and my QAT-trained int8 network tells the arm which block to pick; tune the firmware or steer the arm yourself.",
  "featured": [
   "coffin",
