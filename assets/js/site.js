@@ -137,6 +137,12 @@ function renderEdu(){
 }
 function renderAwards(){var el=$("awards");if(el)el.innerHTML=C.awards.map(function(a){return '<li>'+esc(a)+'</li>'}).join("")}
 function renderSkills(){
+  /* home: one tile per category; CV: the full table */
+  document.querySelectorAll("[data-skill-tiles]").forEach(function(g){
+    g.innerHTML=Object.keys(C.skills).map(function(k){return '<div class="sk-tile rise"><h3 class="label">'+esc(k)+'</h3><ul class="stack">'+
+      C.skills[k].map(function(s){return '<li>'+esc(s)+'</li>'}).join("")+'</ul></div>'}).join("");
+    observe(g);
+  });
   document.querySelectorAll("[data-skills]").forEach(function(t){
     t.innerHTML='<tbody>'+Object.keys(C.skills).map(function(k){return '<tr><th scope="row">'+esc(k)+'</th><td>'+C.skills[k].map(esc).join(" · ")+'</td></tr>'}).join("")+'</tbody>';
   });
