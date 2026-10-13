@@ -165,12 +165,19 @@ function renderAbout(){
 }
 
 /* ---------- Contact ---------- */
+function handle(u,pre){return pre+u.replace(/\/+$/,"").split("/").pop()}
+function renderRes(){
+  var f=window.JM_FOCUS;
+  document.getElementById("ctRes").innerHTML=["embedded","robotics","edge-ai"].map(function(k){var t=C.tracks[k];
+    return '<a href="'+esc(t.resume_pdf)+'" target="_blank" rel="noopener"'+(k===f?' class="cur" aria-current="true"':'')+'>'+esc(t.label)+'</a>'}).join(" · ");
+}
 function renderContact(){
   var P=C.person;
-  document.getElementById("mail").textContent=P.email;
-  document.getElementById("mailto").href="mailto:"+P.email;
-  document.getElementById("li").href=P.linkedin;document.getElementById("gh").href=P.github;
-  document.getElementById("loc").textContent=P.location;
+  document.getElementById("ctIntro").textContent=P.contact_intro||"";
+  document.getElementById("ctGh").href=P.github;document.getElementById("ctGhH").textContent=handle(P.github,"@");
+  document.getElementById("ctLi").href=P.linkedin;document.getElementById("ctLiH").textContent=handle(P.linkedin,"in/");
+  document.getElementById("mail").textContent=P.email;document.getElementById("mailto").href="mailto:"+P.email;
+  renderRes();
   var out=document.getElementById("copied");
   document.getElementById("copy").addEventListener("click",function(){
     function ok(){out.textContent="Copied";clearTimeout(out._t);out._t=setTimeout(function(){out.textContent=""},1800)}
@@ -188,5 +195,5 @@ root.classList.add("js");
 renderChips();renderSelected();renderAll();renderLower();renderExp();renderAbout();renderContact();
 observe(document);
 seen=true;
-window.addEventListener("jm-focus",function(){renderSelected();renderAll()});
+window.addEventListener("jm-focus",function(){renderSelected();renderAll();renderRes()});
 })();
