@@ -108,6 +108,7 @@ h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.02em;margin:
 @media (max-width:520px){.hdr-r #hint{display:none}}
 #stage{cursor:crosshair;touch-action:pan-y}
 #stage.over-block,#stage.over-cam{cursor:pointer}
+.panel.locked #stage,.panel.locked #stage.over-block,.panel.locked #stage.over-cam{cursor:not-allowed}  /* beats the id-level crosshair/pointer while the arm is locked */
 #stage canvas{display:block;width:100%;height:100%}
 .warn{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%) scale(.96);display:grid;gap:2px;justify-items:center;text-align:center;background:var(--danger-soft);border:1px solid var(--danger);color:var(--danger);border-radius:6px;padding:7px 12px;font-family:var(--f-mono);font-size:11.5px;pointer-events:none;opacity:0;transition:opacity .15s,transform .15s;max-width:calc(100% - 24px)}
 .warn.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
