@@ -485,16 +485,15 @@ a.ct-card:hover,.ct-card.ct-click:hover,.ct-card:focus-within{border-color:var(-
 .cvt p{margin:0;font-size:13.5px;line-height:1.55;color:var(--muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 @media (prefers-reduced-motion:reduce){.cvt:hover{transform:none}}
 /* contact form */
-.ct-open{margin-top:16px;font:600 14px var(--f-sans);padding:11px 18px;border-radius:8px;color:var(--accent);background:var(--accent-soft);border:1.5px solid var(--accent)}
+.ct-open{margin-top:16px;font:600 15px var(--f-sans);padding:11px 16px;border-radius:8px;color:var(--accent);background:var(--accent-soft);border:1.5px solid var(--accent)}
 .ct-open:hover{background:var(--accent);color:var(--bg)}
 .cf{margin-top:22px;padding:26px 26px 22px;border:1px solid var(--line);border-radius:12px;background:var(--panel);display:grid;gap:18px;scroll-margin-top:72px}
 @media (max-width:520px){.cf{padding:20px 16px}}
-.cf-h{margin:0 0 4px;font-size:clamp(28px,4.2vw,44px);line-height:1.05;letter-spacing:-.02em;font-weight:600}
-.cf-h em{font-style:italic;color:var(--accent)}
+.cf-h{margin:0;font-size:clamp(20px,2.4vw,24px);line-height:1.25;letter-spacing:-.01em;font-weight:600}
 .cf-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 @media (max-width:620px){.cf-row{grid-template-columns:minmax(0,1fr)}}
 .cf-f{display:grid;gap:7px;min-width:0}
-.cf-f>span,.cf-topic legend{font:500 11px var(--f-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.cf-f>span,.cf-topic legend{font-family:var(--f-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}  /* = .label */
 .cf-f input,.cf-f textarea{font:15px/1.5 var(--f-sans);color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:11px 14px;width:100%;box-sizing:border-box}
 .cf-f textarea{resize:vertical;min-height:130px}
 .cf-f input::placeholder,.cf-f textarea::placeholder{color:var(--muted);opacity:.75}
@@ -502,12 +501,10 @@ a.ct-card:hover,.ct-card.ct-click:hover,.ct-card:focus-within{border-color:var(-
 .cf-topic{border:0;margin:0;padding:0;display:grid;gap:9px}
 .cf-topic legend{padding:0;margin-bottom:9px}
 .cf-chips{display:flex;flex-wrap:wrap;gap:8px}
-.cf-chips .chip{font-size:12px;padding:7px 14px;letter-spacing:.04em;text-transform:uppercase}
-.cf-chips .chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .cf-hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .cf-send{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px}
-.cf-btn{font:600 14px var(--f-sans);padding:12px 22px;border-radius:999px;background:var(--fg);color:var(--bg);border-color:var(--fg)}
-.cf-btn:hover{background:var(--accent);border-color:var(--accent)}
+.cf-btn{font:600 15px var(--f-sans);padding:11px 16px;border-radius:8px;background:var(--accent);color:var(--bg);border-color:var(--accent)}  /* same as the hero Resume CTA */
+.cf-btn:hover{filter:brightness(1.08)}
 .cf-btn:disabled{opacity:.6;cursor:progress}
 .cf-alt{font-size:13.5px;color:var(--muted)}
 .cf-alt a{color:var(--fg)}
