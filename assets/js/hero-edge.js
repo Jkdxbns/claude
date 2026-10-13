@@ -30,7 +30,7 @@ function infer(x){
 /* ---------- draw pad ---------- */
 var pad=document.getElementById("pad"),padCv=document.getElementById("padCv"),pctx=padCv.getContext("2d");
 var ink=document.createElement("canvas"),ictx=ink.getContext("2d"),PS=0,dpr=1,drawing=false,lastPt=null,inkAny=false,procTimer=0;
-var showPx=false;  // false: show the ink being drawn; true: show the 16x16 uint8 input the network reads
+var showPx=false,emptyT=0;  // false: show the ink being drawn; true: show the 16x16 uint8 input the network reads
 function sizePad(){
   var r=pad.getBoundingClientRect();if(!r.width)return;dpr=Math.min(devicePixelRatio||1,2);
   var old=document.createElement("canvas");old.width=ink.width;old.height=ink.height;if(ink.width)old.getContext("2d").drawImage(ink,0,0);
@@ -56,7 +56,7 @@ function drawPad(){
 }
 function pt(e){var r=padCv.getBoundingClientRect();return {x:(e.clientX-r.left)*dpr,y:(e.clientY-r.top)*dpr}}
 pad.addEventListener("pointerdown",function(e){
-  e.preventDefault();pad.setPointerCapture(e.pointerId);drawing=true;lastPt=pt(e);clearTimeout(procTimer);stopAnim();setPx(false);
+  e.preventDefault();pad.setPointerCapture(e.pointerId);drawing=true;lastPt=pt(e);clearTimeout(procTimer);holdPad();stopAnim();setPx(false);
   if(!inkAny){ictx.clearRect(0,0,ink.width,ink.height)}
   if(window.JM_robot)JM_robot.bump();var co=document.getElementById("cmdOut");if(co)co.textContent="";curSample=null;inkAny=true;document.getElementById("padPh").style.opacity=0;stroke(lastPt,lastPt);
 });
@@ -64,7 +64,7 @@ pad.addEventListener("pointermove",function(e){if(!drawing)return;var p=pt(e);st
 function end(){if(!drawing)return;drawing=false;clearTimeout(procTimer);procTimer=setTimeout(fromInk,550)}
 pad.addEventListener("pointerup",end);pad.addEventListener("pointercancel",end);
 function stroke(a,b){ictx.strokeStyle="#000";ictx.lineCap="round";ictx.lineJoin="round";ictx.lineWidth=ink.width*0.075;ictx.beginPath();ictx.moveTo(a.x,a.y);ictx.lineTo(b.x,b.y);ictx.stroke();drawPad()}
-document.getElementById("clear").addEventListener("click",function(){curSample=null;ictx.clearRect(0,0,ink.width,ink.height);inkAny=false;stopAnim();document.getElementById("padPh").style.opacity=1;setInput(null);drawPad();var co=document.getElementById("cmdOut");if(co)co.textContent=""});
+document.getElementById("clear").addEventListener("click",function(){holdPad();curSample=null;ictx.clearRect(0,0,ink.width,ink.height);inkAny=false;stopAnim();document.getElementById("padPh").style.opacity=1;setInput(null);drawPad();var co=document.getElementById("cmdOut");if(co)co.textContent=""});
 
 /* MNIST-style preprocessing: crop, fit in 20x20, centre by mass in 28x28, then BOX-resample to 16x16 */
 function alphaOf(cv,w,h){var d=cv.getContext("2d").getImageData(0,0,w,h).data,a=new Float32Array(w*h);for(var i=0;i<w*h;i++)a[i]=d[i*4+3];return a}
@@ -97,7 +97,7 @@ function paintSample(x){
   ictx.clearRect(0,0,ink.width,ink.height);ictx.imageSmoothingEnabled=true;ictx.imageSmoothingQuality="high";
   var m=ink.width*0.08;if(ink.width)ictx.drawImage(c,m,m,ink.width-2*m,ink.height-2*m);inkAny=true;document.getElementById("padPh").style.opacity=0;drawPad();
 }
-function loadSample(d,animate){curSample=d;var x=SAMPLES[d];paintSample(x);stopAnim();setInput(x);if(animate)run(true);else finish();}
+function loadSample(d,animate){holdPad();curSample=d;var x=SAMPLES[d];paintSample(x);stopAnim();setInput(x);if(animate)run(true);else finish();}
 
 /* ---------- network view ---------- */
 var net=document.getElementById("net"),netCv=document.getElementById("netCv"),nctx=netCv.getContext("2d"),tip=document.getElementById("tip");
@@ -153,14 +153,23 @@ function drawNet(){
 /* ---------- animation ---------- */
 var DUR={serial:{fc1:3600,requant:450,fc2:1100},parallel:{fc1:1500,requant:450,fc2:700}};
 function setPx(on){showPx=on;drawPad()}
+/* a moment after each result, fade the pad back to empty so it reads as "draw here" again;
+   the prediction, the network view and the arm keep going */
+function holdPad(){clearTimeout(emptyT);pad.classList.remove("fade")}
+function emptyPadSoon(){
+  holdPad();
+  emptyT=setTimeout(function(){pad.classList.add("fade");
+    emptyT=setTimeout(function(){ictx.clearRect(0,0,ink.width,ink.height);inkAny=false;curSample=null;showPx=false;drawPad();
+      pad.classList.remove("fade");document.getElementById("padPh").style.opacity=1},360)},1200);
+}
 function setInput(x){X=x;R=x?infer(x):null;showPred(false);updateText();drawNet();setPx(!!x)}
 function stopAnim(){anim=null;drawNet();drawPad()}
 var notify=false;
 function run(np){
-  notify=!!np;if(!X)return;if(reduce){finish();return}
+  notify=!!np;if(!X)return;holdPad();document.getElementById("padPh").style.opacity=0;setPx(true);if(reduce){finish();return}
   P1.fill(0);P2.fill(0);anim={phase:"fc1",start:performance.now(),count:0,cur:{i:0,o:0}};showPred(false);
 }
-function finish(){anim=null;if(R){P1.set(R.a1);P2.set(R.a2)}showPred(true);updateText();drawNet();drawPad();if(notify&&R){notify=false;if(window.JM_robot)JM_robot.pickDigit(R.pred,R.pr[R.pred])}}
+function finish(){anim=null;if(R){P1.set(R.a1);P2.set(R.a2)}showPred(true);updateText();drawNet();drawPad();if(X)emptyPadSoon();if(notify&&R){notify=false;if(window.JM_robot)JM_robot.pickDigit(R.pred,R.pr[R.pred])}}
 function step(now){
   if(anim&&X){
     var d=DUR[mode],el=now-anim.start,ph=anim.phase,tot,target,k;

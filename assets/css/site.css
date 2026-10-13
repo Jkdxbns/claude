@@ -122,13 +122,16 @@ h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.02em;margin:
 .edge{display:grid;grid-template-rows:auto minmax(0,1fr);gap:10px;padding:12px;height:100%}
 .etop{display:grid;grid-template-columns:184px minmax(0,1fr);gap:14px;align-items:start}
 @media (max-width:420px){.etop{grid-template-columns:150px minmax(0,1fr)}}
-.pad{position:relative;width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:8px;background:var(--bg);touch-action:none;cursor:crosshair;overflow:hidden}
+.pad{position:relative;width:100%;aspect-ratio:1;border:2px solid var(--accent);border-radius:8px;background:var(--bg);touch-action:none;cursor:crosshair;overflow:hidden}
 .pad canvas{display:block;width:100%;height:100%}
-/* the drawing area: a solid guide frame with a "draw here" tag that stays visible */
-.pad::after{content:"";position:absolute;inset:7%;border:1.5px solid color-mix(in srgb,var(--accent) 70%,transparent);border-radius:6px;pointer-events:none}
-.pad-tag{position:absolute;top:calc(7% - 7px);left:calc(7% + 10px);font:600 10px/14px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent);background:var(--bg);padding:0 5px;pointer-events:none}
-.panel.locked .pad::after,.panel.locked .pad-tag{opacity:.4}
-.pad .ph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-mono);font-size:11.5px;color:var(--muted);pointer-events:none;transition:opacity .2s;text-align:center}
+/* the drawing area: the pad's own edge is the boundary (accent, heavier than the grey panel lines),
+   with a filled "draw here" tab in its corner */
+.pad canvas{transition:opacity .35s}
+.pad.fade canvas{opacity:0}
+.pad-tag{position:absolute;top:0;left:0;font:600 10px/14px var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:2px 8px 3px 7px;border-radius:0 0 6px 0;pointer-events:none}
+.panel.locked .pad{border-color:var(--line)}
+.panel.locked .pad-tag{opacity:.4}
+.pad .ph{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--f-mono);font-size:12px;font-weight:500;color:var(--accent);pointer-events:none;transition:opacity .2s;text-align:center}
 .digit{font-size:54px;line-height:1;font-weight:600;color:var(--accent);font-variant-numeric:tabular-nums}
 .digit.wait{color:var(--line)}
 .conf{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
