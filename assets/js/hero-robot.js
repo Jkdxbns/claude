@@ -116,11 +116,18 @@ function warn(c,title,ms){
 function lerpQ(a,b,t){return {q1:a.q1+(b.q1-a.q1)*t,q2:a.q2+(b.q2-a.q2)*t}}
 function planFrom(b,start){
   var s=G.cube,top=b.y-s/2;
-  var wps=[{x:b.x,y:top-58},{x:b.x,y:top-14,grasp:true},{grip:0},{x:b.x,y:top-100,held:true},{x:G.binX,y:G.tableY-s*3.6,held:true},{grip:1}];
+  var wps=[{x:b.x,y:top-58},{x:b.x,y:top-14,grasp:true},{grip:0},{x:b.x,y:top-100,held:true},{x:G.binX,y:G.tableY-s*3.6,held:true,carry:true},{grip:1}];
   var cur=start?{q1:start.q1,q2:start.q2}:{q1:A.q1,q2:A.q2},grip=start?1:A.grip,steps=[];
   for(var i=0;i<wps.length;i++){
     var wp=wps[i];
     if(wp.x===undefined){grip=wp.grip;steps.push({type:"grip",v:wp.grip});continue}
+    if(wp.carry){
+      /* aim the held block, not the wrist: iterate the wrist target until the block's centre sits right above
+         the bin centre with its bottom clear of the bin walls, so it drops straight down */
+      var tx=wp.x,ty=wp.y,clearY=G.tableY-G.cube*1.3-G.cube/2-10;
+      for(var it=0;it<6;it++){var s0=ik(tx,ty),hc=heldCenter(pose(s0.q1,s0.q2,0),b);tx-=hc.x-G.binX;ty-=Math.max(0,hc.y-clearY)}
+      wp.x=tx;wp.y=ty;
+    }
     var sol=ik(wp.x,wp.y);
     if(sol.out)return {err:{why:"block "+b.id+" is out of reach"}};
     if(wp.grasp){var P=pose(sol.q1,sol.q2,grip);b.ga=(b.x-P.wx)*P.ux+(b.y-P.wy)*P.uy;b.gb=(b.x-P.wx)*P.px+(b.y-P.wy)*P.py}
