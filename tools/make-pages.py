@@ -68,7 +68,8 @@ PAGES = {
 
   <section class="sec" aria-labelledby="h-cvp">
     <div class="shd"><h2 id="h-cvp">Projects</h2><a class="label lk" href="/projects/">Project gallery →</a></div>
-    <ol class="cvproj" id="cvProj"></ol>
+    <div class="cvtabs" id="cvTabs" role="group" aria-label="Filter projects by area"></div>
+    <div class="cvtiles" id="cvProj"></div>
   </section>
 
   <section class="sec" aria-labelledby="h-edu">

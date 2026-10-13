@@ -77,6 +77,12 @@ function renderChips(){
   el.innerHTML=["All"].concat(C.filters).map(function(f){return '<button type="button" class="chip" data-f="'+esc(f)+'" aria-pressed="'+(f===filter)+'">'+esc(f)+'</button>'}).join("");
   el.querySelectorAll(".chip").forEach(function(b){b.addEventListener("click",function(){filter=b.dataset.f;renderChips();renderAllGrid()})});
 }
+/* a filter can pin its own lead order (content.js filter_order); the rest keep the default order */
+function leadOrder(tag,list){
+  var lead=(C.filter_order||{})[tag];if(!lead)return list;
+  var rank=function(p){var i=lead.indexOf(p.id);return i<0?lead.length:i};
+  return list.map(function(p,i){return [p,i]}).sort(function(a,b){return (rank(a[0])-rank(b[0]))||(a[1]-b[1])}).map(function(x){return x[0]});
+}
 function renderAllGrid(){
   var el=$("allGrid");if(!el)return;
   var tag=C.filter_tag_map[filter],q=query.trim().toLowerCase();
@@ -86,10 +92,7 @@ function renderAllGrid(){
     if(!q)return true;
     return [p.title,p.blurb,p.period||"",(p.stack||[]).join(" "),(p.tags||[]).map(function(t){return TAGNAME[t]||t}).join(" ")].join(" ").toLowerCase().indexOf(q)>-1;
   });
-  /* a filter can pin its own lead order (content.js filter_order); the rest keep the default order */
-  var lead=(C.filter_order||{})[tag];
-  if(lead){var rank=function(p){var i=lead.indexOf(p.id);return i<0?lead.length:i};
-    list=list.map(function(p,i){return [p,i]}).sort(function(a,b){return (rank(a[0])-rank(b[0]))||(a[1]-b[1])}).map(function(x){return x[0]})}
+  list=leadOrder(tag,list);
   el.innerHTML=list.length?list.map(card).join(""):'<p class="empty">No projects match that filter or search.</p>';
   var m=$("allMeta");if(m)m.textContent=list.length+" of "+all.length+" projects";
   observe(el);
@@ -103,6 +106,11 @@ function wireSearch(){
 var MON={Jan:0,Feb:1,Mar:2,Apr:3,May:4,Jun:5,Jul:6,Aug:7,Sep:8,Oct:9,Nov:10,Dec:11};
 function ym(s){var m=String(s).trim().match(/([A-Za-z]{3})?\s*(\d{4})/);return m?(+m[2])*12+(m[1]&&MON[m[1]]!=null?MON[m[1]]:0):0}
 function span(d){var p=d.split(/\s*[–-]\s*/);return {s:ym(p[0]),e:ym(p[1]||p[0])}}
+function expTile(x){
+  return '<li class="xp rise"><div class="xp-when">'+esc(x.dates)+'</div><div class="xp-tile"><div class="xp-h"><h3>'+esc(x.title)+'</h3>'+
+    '<span class="xp-co">'+esc(x.company)+'</span><span class="xp-loc">'+esc(x.location)+'</span></div>'+
+    '<ul class="xp-pts">'+x.bullets.map(function(b){return '<li>'+esc(b)+'</li>'}).join("")+'</ul></div></li>';
+}
 function expItem(x,i,full){
   var head='<li class="rise"><div class="tl-h"><h3>'+esc(x.title)+' <span>· '+esc(x.company)+'</span></h3><span class="when">'+esc(x.dates)+'</span></div>'+
     '<div class="where">'+esc(x.location)+'</div>';
@@ -117,7 +125,9 @@ function renderExp(){
   var full=el.dataset.full==="1";
   var lead=C.experience.filter(function(x){return x.placement_rule}),main=C.experience.filter(function(x){return !x.placement_rule});
   main.sort(function(a,b){var A=span(a.dates),B=span(b.dates);return (B.e-A.e)||(B.s-A.s)});
-  el.innerHTML='<ol class="tl">'+main.map(function(x,i){return expItem(x,i,full)}).join("")+'</ol>'+
+  el.innerHTML=full?
+    '<ol class="xpl">'+main.map(expTile).join("")+'</ol>'+(lead.length?'<div class="label xp-lead">Leadership</div><ol class="xpl">'+lead.map(expTile).join("")+'</ol>':''):
+    '<ol class="tl">'+main.map(function(x,i){return expItem(x,i,full)}).join("")+'</ol>'+
     (lead.length?'<div class="label lead-label">Leadership</div><ol class="tl">'+lead.map(function(x,i){return expItem(x,"L"+i,full)}).join("")+'</ol>':'');
   el.querySelectorAll(".morebtn").forEach(function(b){b.addEventListener("click",function(){
     var r=$(b.getAttribute("aria-controls")),open=b.getAttribute("aria-expanded")!=="true";
@@ -156,10 +166,24 @@ function pdfButtons(cls){
 function renderCv(){
   var line=$("cvLine");if(line){var P=C.person;line.textContent=P.degree_line+" · "+P.location+" · "+P.email}
   var pdf=$("cvPdf");if(pdf)pdf.innerHTML=pdfButtons("pdfbtn");
-  var pr=$("cvProj");if(!pr)return;
-  pr.innerHTML=allOrdered().map(function(p){
-    return '<li><button type="button" class="cbtn cvp" data-id="'+p.id+'" aria-haspopup="dialog">'+esc(p.title)+'</button>'+
-      '<span class="cvp-meta">'+esc(p.period||"")+'</span><p>'+esc(p.blurb)+'</p></li>';
+  renderCvTabs();renderCvProj();
+}
+var cvTab="All";
+function renderCvTabs(){
+  var el=$("cvTabs");if(!el)return;
+  el.innerHTML=["All"].concat(C.filters).map(function(f){var t=C.filter_tag_map[f];
+    var n=t?C.projects.filter(function(p){return p.tags.indexOf(t)>-1}).length:C.projects.length;
+    return '<button type="button" data-f="'+esc(f)+'" aria-pressed="'+(f===cvTab)+'">'+esc(f)+' <span>'+n+'</span></button>'}).join("");
+  el.querySelectorAll("button").forEach(function(b){b.addEventListener("click",function(){cvTab=b.dataset.f;renderCvTabs();renderCvProj()})});
+}
+function renderCvProj(){
+  var el=$("cvProj");if(!el)return;
+  var tag=C.filter_tag_map[cvTab];
+  var list=leadOrder(tag,allOrdered().filter(function(p){return !tag||p.tags.indexOf(tag)>-1}));
+  el.innerHTML=list.map(function(p){
+    return '<article class="cvt"><span class="tab">'+esc(TAGNAME[tag||p.tags[0]]||"")+'</span>'+
+      '<h3><button type="button" class="cbtn" data-id="'+p.id+'" aria-haspopup="dialog">'+esc(p.title)+'</button></h3>'+
+      '<div class="cvt-meta">'+esc(p.period||"")+'</div><p>'+esc(p.blurb)+'</p></article>';
   }).join("");
 }
 
@@ -275,7 +299,7 @@ if(dr){
   document.addEventListener("click",function(e){
     if(!e.target.closest)return;
     var b=e.target.closest(".cbtn");
-    if(!b){var c=e.target.closest(".card");if(c&&!e.target.closest("a"))b=c.querySelector(".cbtn")}
+    if(!b){var c=e.target.closest(".card,.cvt");if(c&&!e.target.closest("a"))b=c.querySelector(".cbtn")}
     if(b)openDrawer(b.dataset.id,b);
   });
 }
