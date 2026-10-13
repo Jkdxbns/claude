@@ -128,6 +128,7 @@ def meta(h, page, url):
     h = re.sub(r'(<meta property="og:description" content=")[^"]*', lambda m: m.group(1) + d, h, count=1)
     h = re.sub(r'(<meta name="twitter:title" content=")[^"]*', lambda m: m.group(1) + t, h, count=1)
     h = re.sub(r'(<meta name="twitter:description" content=")[^"]*', lambda m: m.group(1) + d, h, count=1)
+    h = h.replace('<a href="/" aria-current="page">Home</a>', '<a href="/">Home</a>', 1)
     h = h.replace(f'<a href="{page["nav"]}">', f'<a href="{page["nav"]}" aria-current="page">', 1)
     return h
 
