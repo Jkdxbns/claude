@@ -33,13 +33,13 @@ window.JM_CONTENT = {
     "robocon"
    ],
    "resume_pdf": "/assets/resume/Justin_Mascarenhas_Resume_System.pdf",
-   "headline": "I build robots end to end: the model that sees, the firmware that drives, the arm that moves.",
+   "headline": "I build robots end to end: the model that sees, the firmware that drives, the actuators that move.",
    "sub": "M.S. Computer Engineering, RIT. One system from my capstone, COFFIN: a model decides what to pick, firmware turns that into servo pulses, and the arm moves. Every panel is live: draw a digit, tune the firmware, steer the arm."
   },
   "embedded": {
    "label": "Embedded",
    "path": "/embedded/",
-   "headline": "I build robots end to end: the model that sees, the firmware that drives, the arm that moves.",
+   "headline": "I build robots end to end: the model that sees, the firmware that drives, the actuators that move.",
    "sub": "Firmware focus: bare-metal C on Cortex-M, timers, interrupts and serial buses. You control the firmware: change joint speed and angle limits and watch the arm, its workspace and the servo pulses follow. The other panels run on their own.",
    "order": [
     "stm32-temp",
@@ -60,7 +60,7 @@ window.JM_CONTENT = {
   "robotics": {
    "label": "Robotics",
    "path": "/robotics/",
-   "headline": "I build robots end to end: the model that sees, the firmware that drives, the arm that moves.",
+   "headline": "I build robots end to end: the model that sees, the firmware that drives, the actuators that move.",
    "sub": "Robotics focus: inverse kinematics, collision checks and pick planning. You control the arm: steer it, push it into the table, click a block to pick it. Perception and firmware run on their own.",
    "order": [
     "coffin",
@@ -81,7 +81,7 @@ window.JM_CONTENT = {
   "edge-ai": {
    "label": "Edge AI",
    "path": "/edge-ai/",
-   "headline": "I build robots end to end: the model that sees, the firmware that drives, the arm that moves.",
+   "headline": "I build robots end to end: the model that sees, the firmware that drives, the actuators that move.",
    "sub": "Edge AI focus: quantization, CUDA and TensorRT on Jetson. You control perception: draw a digit and my own int8 network, running in your browser, tells the arm which block to pick.",
    "order": [
     "coffin",
