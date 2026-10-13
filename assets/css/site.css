@@ -266,7 +266,7 @@ h3.sub{font-family:var(--f-mono);font-size:12px;font-weight:500;letter-spacing:.
 .drawer.open{transform:none}
 .dr-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;min-height:48px;padding:0 14px;border-bottom:1px solid var(--line);flex:none}
 .dr-x{font-size:16px;line-height:1;padding:5px 10px}
-.dr-body{overflow-y:auto;overscroll-behavior:contain;padding:16px 18px 32px;display:grid;gap:18px;align-content:start}
+.dr-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:16px 18px 32px;display:grid;grid-auto-rows:max-content;gap:18px;align-content:start}
 .dr-body .media{border:1px solid var(--line);border-radius:8px}
 .dr-body .media video,.dr-body .media img{width:100%;height:100%;object-fit:cover}
 .dr-body h2{font-size:clamp(20px,2.4vw,24px);line-height:1.2;margin:4px 0 0;letter-spacing:-.01em}
@@ -339,6 +339,7 @@ h3.sub{font-family:var(--f-mono);font-size:12px;font-weight:500;letter-spacing:.
 .nf p{color:var(--muted);margin:0 0 8px;max-width:50ch}
 
 @media (prefers-reduced-motion:reduce){.js .rise{opacity:1;transform:none}.card:hover{transform:none}.brow .bt i{transition:none}.status::before{animation:none}}
-/* phones: panel headers wrap instead of clipping Retry and the Serial/64-lane switch */
-@media (max-width:520px){.phd{flex-wrap:wrap;row-gap:6px;padding-block:8px;white-space:normal}.phd>span:first-child{white-space:nowrap}}
+/* panel headers wrap instead of clipping Retry or the Serial/64-lane switch (narrow screens, "view only" tag) */
+.phd{flex-wrap:wrap;row-gap:6px;padding-block:6px}
+@media (max-width:520px){.phd{padding-block:8px;white-space:normal}.phd>span:first-child{white-space:nowrap}}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}html{scroll-behavior:auto}}
