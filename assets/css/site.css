@@ -150,8 +150,10 @@ h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.02em;margin:
 .muted{color:var(--muted)}
 
 /* firmware */
-.fwgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:18px;padding:12px}
-@media (max-width:760px){.fwgrid{grid-template-columns:1fr}}
+/* TX line on its own row; the sliders sit beside the scope only, so their column spans exactly the canvas */
+.fwgrid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);grid-template-areas:"tx ." "scope ctl";column-gap:18px;padding:12px}
+.fwgrid .tx{grid-area:tx}.fwgrid .fscope{grid-area:scope}.fwgrid .ctl{grid-area:ctl}
+@media (max-width:760px){.fwgrid{grid-template-columns:1fr;grid-template-areas:"tx" "scope" "ctl";row-gap:14px}.fwgrid .tx{margin-bottom:-6px}}
 .tx{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;padding-bottom:7px;margin-bottom:8px;border-bottom:1px dashed var(--line);font-family:var(--f-mono);font-size:12px}
 .tx .k{color:var(--muted)}
 .tx b{font-weight:500;color:var(--warm);background:var(--warm-soft);padding:0 6px;border-radius:3px}
@@ -160,8 +162,9 @@ h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.02em;margin:
 @media (max-width:480px){.tx .note{max-width:100%;margin-left:0}}
 .fscope{height:156px;border-radius:8px;overflow:hidden;background:var(--scr)}
 .fscope canvas{display:block;width:100%;height:100%}
-/* sliders span the scope column top to bottom: speed level with the TX row, the last slider level with the scope's bottom edge */
+/* sliders span the scope's height: first label level with its top edge, last slider level with its bottom edge */
 .ctl{display:grid;gap:12px;align-content:space-between;font-family:var(--f-mono);font-size:12px}
+.ctl>div:first-child .h{margin-top:-4px}  /* puts the cap height of "Joint speed" on the scope's top edge */
 .ctl .h{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}
 .ctl .h span{color:var(--muted)}
 .ctl .h b{font-weight:500;font-variant-numeric:tabular-nums}
