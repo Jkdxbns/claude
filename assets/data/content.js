@@ -714,6 +714,24 @@ window.JM_CONTENT = {
    "title": "Serial Data Plotter",
    "blurb": "PyQt5 desktop app: device discovery, multi-threaded serial capture, CSV logging and per-tab live Matplotlib plots, with oscilloscope integration.",
    "github": "https://github.com/Jkdxbns/Serial-Data-Plotter"
+  },
+  {
+   "id": "mpi-neuron",
+   "title": "MPI Hodgkin-Huxley Neuron Simulation",
+   "blurb": "Distributed dendrite computation across MPI workers on a SLURM cluster, with scaling and load-imbalance analysis.",
+   "github": null
+  },
+  {
+   "id": "mpi-raytracer",
+   "title": "Parallel Ray Tracer with MPI Scheduling",
+   "blurb": "Four MPI work-distribution strategies (static strip, block and cyclic, plus a dynamic task queue) for a 5000×5000 render, benchmarked against each other.",
+   "github": null
+  },
+  {
+   "id": "2fa-lock",
+   "title": "Fingerprint + SMS OTP Two-Factor Lock",
+   "blurb": "An Arduino matches a fingerprint, then a Python host texts a one-time password that the user types on a keypad. Unknown fingers and wrong codes trigger SMS alerts, and repeated failures lock the system.",
+   "github": "https://github.com/Jkdxbns/2FA_smart_briefcase"
   }
  ],
  "experience": [
@@ -958,7 +976,9 @@ window.JM_CONTENT = {
    "robocon",
    "frame-sim",
    "telemetry-gateway",
-   "serial-data-plotter"
+   "serial-data-plotter",
+   "mpi-neuron",
+   "mpi-raytracer"
   ],
   "pending": [],
   "path": "/assets/img/projects/<id>.webp",
