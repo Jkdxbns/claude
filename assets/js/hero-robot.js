@@ -231,9 +231,9 @@ function clampLim(a){var d1=a.q1*180/PI,e=180+a.q2*180/PI,n1=Math.max(CFG.sMin,M
   if(Math.abs(n1-d1)<0.6&&Math.abs(ne-e)<0.6)return null;return {q1:n1*PI/180,q2:(ne-180)*PI/180}}
 function buildWS(){
   if(!W||!G.L1)return;WS=document.createElement("canvas");WS.width=Math.round(W);WS.height=Math.round(H);
-  var g=WS.getContext("2d");g.fillStyle=col.accent||"#2c6a62";g.globalAlpha=.22;
-  for(var a=CFG.sMin;a<=CFG.sMax;a+=2.5)for(var e=Math.max(CFG.eMin,2);e<=Math.min(CFG.eMax,178);e+=2.5){
-    var P=pose(a*PI/180,(e-180)*PI/180,1);if(P.wy<G.tableY-4&&P.wy>4&&P.wx>4&&P.wx<W-4)g.fillRect(P.wx-.8,P.wy-.8,1.6,1.6)}
+  var g=WS.getContext("2d");g.fillStyle=col.accent||"#2c6a62";/* opaque, overlapping squares merge into one solid region; the region is tinted once when drawn */
+  for(var a=CFG.sMin;a<=CFG.sMax;a+=1.5)for(var e=Math.max(CFG.eMin,2);e<=Math.min(CFG.eMax,178);e+=1.5){
+    var P=pose(a*PI/180,(e-180)*PI/180,1);if(P.wy<G.tableY-4&&P.wy>4&&P.wx>4&&P.wx<W-4)g.fillRect(P.wx-5,P.wy-5,10,10)}
 }
 function markDigits(){if(window.JM_markDigits)JM_markDigits(blocks.filter(function(b){return b.state==="table"}).map(function(b){return +b.id}))}
 function updateFW(){
@@ -298,7 +298,7 @@ function drawAll(now){
   ctx.strokeStyle=col.grid;ctx.lineWidth=1;
   for(var gx=0;gx<W;gx+=20){ctx.beginPath();ctx.moveTo(gx+.5,0);ctx.lineTo(gx+.5,G.tableY);ctx.stroke()}
   for(var gy=G.tableY;gy>0;gy-=20){ctx.beginPath();ctx.moveTo(0,gy+.5);ctx.lineTo(W,gy+.5);ctx.stroke()}
-  if(WS)ctx.drawImage(WS,0,0,W,H);
+  if(WS){ctx.globalAlpha=.17;ctx.drawImage(WS,0,0,W,H);ctx.globalAlpha=1}
   ctx.setLineDash([3,5]);ctx.strokeStyle=col.line;ctx.beginPath();ctx.arc(G.sx,G.sy,G.reach,-PI,0);ctx.stroke();ctx.setLineDash([]);
   // table, hatching below it
   ctx.strokeStyle=col.muted;ctx.lineWidth=1.5;ctx.beginPath();ctx.moveTo(0,G.tableY+.5);ctx.lineTo(W,G.tableY+.5);ctx.stroke();
