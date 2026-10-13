@@ -152,7 +152,7 @@ function drawNet(){
 
 /* ---------- animation ---------- */
 var DUR={serial:{fc1:3600,requant:450,fc2:1100},parallel:{fc1:1500,requant:450,fc2:700}};
-function setPx(on){showPx=on;pad.classList.toggle("px",on);drawPad()}
+function setPx(on){showPx=on;drawPad()}
 function setInput(x){X=x;R=x?infer(x):null;showPred(false);updateText();drawNet();setPx(!!x)}
 function stopAnim(){anim=null;drawNet();drawPad()}
 var notify=false;
