@@ -106,7 +106,7 @@ var P1=new Int32Array(64),P2=new Int32Array(10),HV=null;   // partial sums shown
 var anim=null; // {phase,start,count,cur:{i,o}}
 function sizeNet(){
   var r=net.getBoundingClientRect(),w=r.width,h=r.height;if(!w||!h)return;dpr=Math.min(devicePixelRatio||1,2);
-  var gap=18,g=Math.max(60,Math.min(h-24,(w-gap)*0.55,170));
+  var gap=18,g=Math.max(60,Math.min(h-20,(w-gap)*0.55,190));
   L={w:w,g:g,gap:gap,y0:18,xh:0,narrow:w<330};L.xo=g+gap;L.yo=18;L.ow=w-L.xo;L.oh=g;L.h=h;
   netCv.width=Math.round(w*dpr);netCv.height=Math.round(h*dpr);netCv.style.height=h+"px";nctx.setTransform(dpr,0,0,dpr,0,0);drawNet();
 }
@@ -116,7 +116,7 @@ function drawNet(){
   if(!L.w||!col.fg)return;var c=nctx,i,o,p;
   c.clearRect(0,0,L.w,L.h);
   c.font="10.5px 'IBM Plex Mono', ui-monospace, monospace";c.fillStyle=col.muted;c.textAlign="left";
-  if(anim&&anim.phase==="requant"){c.fillStyle=col.warm;c.fillText(L.narrow?"ReLU → UINT8":"ReLU · rescale → UINT8",L.xh,12);c.fillStyle=col.muted}else c.fillText(L.narrow?"fc1 · 64 → UINT8":"fc1 · 64 INT32 → UINT8",L.xh,12);c.fillText(L.ow>150?"fc2 · 10 logits":"fc2",L.xo,12);
+  if(anim&&anim.phase==="requant"){c.fillStyle=col.warm;c.fillText(L.narrow?"ReLU → UINT8":"ReLU · rescale → UINT8",L.xh,12);c.fillStyle=col.muted}else c.fillText(L.narrow?"fc1 · 64 → UINT8":"fc1 · 64 INT32 → UINT8",L.xh,12);c.fillText(L.ow>c.measureText("fc2 · 10 logits").width+6?"fc2 · 10 logits":"fc2",L.xo,12);
   var ph=anim?anim.phase:"done";
   // wires for the current step
   if(anim&&X){
