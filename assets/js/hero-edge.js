@@ -83,9 +83,6 @@ function box16(m){
   }
   return out;
 }
-var samples=document.getElementById("samples");
-SAMPLES.forEach(function(x,d){var b=document.createElement("button");b.type="button";b.textContent=d;b.setAttribute("aria-label","Load MNIST test image of a "+d);
-  b.addEventListener("click",function(){loadSample(d,true)});samples.appendChild(b)});
 var curSample=null;
 function paintSample(x){
   var c=document.createElement("canvas");c.width=c.height=16;var g=c.getContext("2d"),im=g.createImageData(16,16);
@@ -160,7 +157,7 @@ function drawNet(){
 
 /* ---------- animation ---------- */
 var DUR={serial:{fc1:3600,requant:450,fc2:1100},parallel:{fc1:1500,requant:450,fc2:700}};
-function setInput(x){X=x;R=x?infer(x):null;if(R)document.getElementById("realMs").textContent=(R.ms<0.1?"<0.1":R.ms.toFixed(2))+" ms";showPred(false);updateText();drawNet()}
+function setInput(x){X=x;R=x?infer(x):null;showPred(false);updateText();drawNet()}
 function stopAnim(){anim=null;drawNet()}
 var notify=false;
 function run(np){
@@ -252,7 +249,7 @@ net.addEventListener("pointerleave",function(){tip.classList.remove("on")});
 
 /* ---------- boot ---------- */
 window.JM_edge={busy:function(){return !!anim},loadSample:function(d,a){var co=document.getElementById("cmdOut");if(co)co.textContent="";loadSample(d,a)}};
-window.JM_markDigits=function(ds){document.querySelectorAll("#samples button").forEach(function(b,i){b.classList.toggle("on",ds.indexOf(i)>-1)})};
+window.JM_markDigits=function(){};  /* the arm still reports its block digits; there is no sample row to mark any more */
 if(window.JM_robot&&JM_robot.mark)JM_robot.mark();
 readColors();
 function resizeAll(){sizePad();sizeNet()}
