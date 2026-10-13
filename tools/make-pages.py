@@ -21,23 +21,27 @@ noscript = re.search(r"<noscript>.*?</noscript>", src, re.S).group(0)
 PAGES = {
     "projects": {
         "title": "Projects · Justin Mascarenhas",
-        "desc": "Every project by Justin Mascarenhas across embedded firmware, robotics, edge AI and HPC, with filters and search.",
+        "desc": "Every project by Justin Mascarenhas across embedded firmware, robotics, edge AI and ML, with filters and search.",
         "nav": "/projects/",
         "main": '''  <section class="pg-hd">
     <div class="label">Projects</div>
-    <h1>All projects</h1>
-    <p class="sum">Firmware, robotics, edge AI and HPC work. Filter by area or search by tool, chip or model; open any card for the details.</p>
+    <h1>Projects</h1>
+    <p class="sum">Firmware, robotics, edge AI and ML work, starting with what I'm building now. Filter by area or search by tool, chip or model; open any card for the details.</p>
   </section>
-  <div class="ptools">
-    <div class="chips" id="chips" role="group" aria-label="Filter projects"></div>
-    <label class="search"><span class="vh">Search projects</span><input id="q" type="search" placeholder="Search projects, tools, chips…" autocomplete="off"></label>
-  </div>
-  <div class="label meta-line" id="allMeta" aria-live="polite"></div>
-  <div class="cards" id="allGrid"></div>
 
   <section class="sec" aria-labelledby="h-on">
     <div class="shd"><h2 id="h-on">Ongoing</h2></div>
     <div class="box" id="nowB"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-all">
+    <div class="shd"><h2 id="h-all">All projects</h2></div>
+    <div class="ptools">
+      <div class="chips" id="chips" role="group" aria-label="Filter projects"></div>
+      <label class="search"><span class="vh">Search projects</span><input id="q" type="search" placeholder="Search projects, tools, chips…" autocomplete="off"></label>
+    </div>
+    <div class="label meta-line" id="allMeta" aria-live="polite"></div>
+    <div class="cards" id="allGrid"></div>
   </section>
 
   <section class="sec" aria-labelledby="h-arch">

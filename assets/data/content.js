@@ -447,7 +447,8 @@ window.JM_CONTENT = {
    "title": "GPT-2 Style Language Model from Scratch",
    "period": "PyTorch",
    "tags": [
-    "ml"
+    "ml",
+    "edge-ai"
    ],
    "blurb": "A GPT-2 style Transformer written from scratch: attention, MLP blocks, weight tying, a TikToken wrapper and a custom training loop.",
    "spec": [
@@ -925,6 +926,22 @@ window.JM_CONTENT = {
   "Edge AI": "edge-ai",
   "Robotics": "robotics",
   "ML": "ml"
+ },
+ "filter_order": {
+  "firmware": [
+   "stm32-temp",
+   "turret",
+   "coffin"
+  ],
+  "edge-ai": [
+   "cuda-vgg16",
+   "slm-compression",
+   "coffin",
+   "turret",
+   "qat-mnist",
+   "asr",
+   "gpt2"
+  ]
  },
  "images": {
   "ready": [

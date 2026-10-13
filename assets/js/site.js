@@ -6,6 +6,9 @@
 var C=window.JM_CONTENT,root=document.documentElement;
 var reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
 var BY={};C.projects.forEach(function(p){BY[p.id]=p});
+/* in-progress work joins the projects grid and the tile as text only: status, what it is, stack, code link; never metrics */
+var WIP=(C.in_progress||[]).map(function(p){var w={wip:true,period:p.status,spec:[],bars:[],bullets:[]};
+  ["id","title","status","tags","blurb","stack","github"].forEach(function(k){w[k]=p[k]});BY[w.id]=w;return w});
 var READY={};(C.images.ready||[]).forEach(function(id){READY[id]=true});
 var TAGNAME={};Object.keys(C.filter_tag_map).forEach(function(k){TAGNAME[C.filter_tag_map[k]]=k});
 var filter="All",query="",seen=false;
@@ -28,9 +31,10 @@ function specTable(p){
 }
 /* Robocon is never first in any list */
 function guard(list){if(list.length>1&&list[0].id==="robocon"){var r=list.shift();list.splice(1,0,r)}return list}
+function periodLabel(p){return p.wip?'<div><span class="status">'+esc(p.status)+'</span></div>':'<div class="label">'+esc(p.period)+'</div>'}
 function card(p){
   return '<article class="card rise'+(seen?' in':'')+'">'+media(p,"media")+
-    '<div class="cbody"><div class="label">'+esc(p.period)+'</div>'+
+    '<div class="cbody">'+periodLabel(p)+
     '<h3><button type="button" class="cbtn" data-id="'+p.id+'" aria-haspopup="dialog">'+esc(p.title)+'</button></h3>'+
     '<p class="blurb">'+esc(p.blurb)+'</p>'+specTable(p)+'<span class="more-hint" aria-hidden="true">Details →</span></div></article>';
 }
@@ -76,13 +80,18 @@ function renderChips(){
 function renderAllGrid(){
   var el=$("allGrid");if(!el)return;
   var tag=C.filter_tag_map[filter],q=query.trim().toLowerCase();
-  var list=allOrdered().filter(function(p){
+  var all=allOrdered().concat(WIP);
+  var list=all.filter(function(p){
     if(tag&&p.tags.indexOf(tag)<0)return false;
     if(!q)return true;
     return [p.title,p.blurb,p.period||"",(p.stack||[]).join(" "),(p.tags||[]).map(function(t){return TAGNAME[t]||t}).join(" ")].join(" ").toLowerCase().indexOf(q)>-1;
   });
+  /* a filter can pin its own lead order (content.js filter_order); the rest keep the default order */
+  var lead=(C.filter_order||{})[tag];
+  if(lead){var rank=function(p){var i=lead.indexOf(p.id);return i<0?lead.length:i};
+    list=list.map(function(p,i){return [p,i]}).sort(function(a,b){return (rank(a[0])-rank(b[0]))||(a[1]-b[1])}).map(function(x){return x[0]})}
   el.innerHTML=list.length?list.map(card).join(""):'<p class="empty">No projects match that filter or search.</p>';
-  var m=$("allMeta");if(m)m.textContent=list.length+" of "+C.projects.length+" projects";
+  var m=$("allMeta");if(m)m.textContent=list.length+" of "+all.length+" projects";
   observe(el);
 }
 function wireSearch(){
@@ -221,7 +230,8 @@ function drMedia(p){
 function openDrawer(id,btn){
   if(!dr)return;var p=BY[id];if(!p)return;opener=btn||null;clearTimeout(closeT);
   drBody.innerHTML=drMedia(p)+
-    '<div><div class="label">'+esc(p.period)+'</div><h2 id="drTitle">'+esc(p.title)+'</h2></div>'+
+    '<div>'+periodLabel(p)+'<h2 id="drTitle">'+esc(p.title)+'</h2></div>'+
+    (p.wip?'<p class="wip-about">'+esc(p.blurb)+'</p>':'')+
     demoNote(p)+specTable(p)+bars(p)+
     (p.bullets&&p.bullets.length?'<ul class="bul">'+p.bullets.map(function(b){return '<li>'+esc(b)+'</li>'}).join("")+'</ul>':'')+
     (p.stack&&p.stack.length?'<div><h3 class="sub">Stack</h3><ul class="stack">'+p.stack.map(function(s){return '<li>'+esc(s)+'</li>'}).join("")+'</ul></div>':'')+
