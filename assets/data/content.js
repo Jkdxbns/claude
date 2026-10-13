@@ -1029,5 +1029,27 @@ window.JM_CONTENT = {
   "videos": {
    "cuda-vgg16": "/assets/video/cuda-vgg16.mp4"
   }
+ },
+ "hero_guide": {
+  "title": "How to use this demo",
+  "about": "This is a browser model of COFFIN, the voice-controlled robotic arm I built for my M.S. capstone at RIT. On the real robot, a camera and YOLO find the target; here, a digit you draw does. The classifier is my own 256→64→10 network, trained with quantization-aware training for int8 weights, and it runs right here in your browser with integer math (97.43% on the MNIST test set).",
+  "steps": [
+   {
+    "p": "ai",
+    "name": "Perceive",
+    "text": "Draw a digit on the pad or tap an MNIST sample. Highlighted numbers are on the table. Switch Serial / 64 lanes to watch the network compute."
+   },
+   {
+    "p": "fw",
+    "name": "Command",
+    "text": "Drag the joint speed or narrow the shoulder and elbow limits, then watch the servo pulses, the workspace map and the arm respond."
+   },
+   {
+    "p": "rb",
+    "name": "Move",
+    "text": "Move over the arm to steer it, click a block to pick it, or push it into the table to trigger a collision warning. If a pick is rejected, press Retry."
+   }
+  ],
+  "tip": "The Focus buttons choose which panel you control; System unlocks all three. Leave it alone and it runs by itself."
  }
 };
