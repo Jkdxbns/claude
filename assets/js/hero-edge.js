@@ -57,7 +57,7 @@ pad.addEventListener("pointermove",function(e){if(!drawing)return;var p=pt(e);st
 function end(){if(!drawing)return;drawing=false;clearTimeout(procTimer);procTimer=setTimeout(fromInk,550)}
 pad.addEventListener("pointerup",end);pad.addEventListener("pointercancel",end);
 function stroke(a,b){ictx.strokeStyle="#000";ictx.lineCap="round";ictx.lineJoin="round";ictx.lineWidth=ink.width*0.075;ictx.beginPath();ictx.moveTo(a.x,a.y);ictx.lineTo(b.x,b.y);ictx.stroke();drawPad()}
-document.getElementById("clear").addEventListener("click",function(){curSample=null;ictx.clearRect(0,0,ink.width,ink.height);inkAny=false;stopAnim();document.getElementById("padPh").style.opacity=1;setInput(null)});
+document.getElementById("clear").addEventListener("click",function(){curSample=null;ictx.clearRect(0,0,ink.width,ink.height);inkAny=false;stopAnim();document.getElementById("padPh").style.opacity=1;setInput(null);drawPad();var co=document.getElementById("cmdOut");if(co)co.textContent=""});
 
 /* MNIST-style preprocessing: crop, fit in 20x20, centre by mass in 28x28, then BOX-resample to 16x16 */
 function alphaOf(cv,w,h){var d=cv.getContext("2d").getImageData(0,0,w,h).data,a=new Float32Array(w*h);for(var i=0;i<w*h;i++)a[i]=d[i*4+3];return a}
@@ -115,7 +115,7 @@ function drawNet(){
   if(!L.w||!col.fg)return;var c=nctx,i,o,p;
   c.clearRect(0,0,L.w,L.h);
   c.font="10.5px 'IBM Plex Mono', ui-monospace, monospace";c.fillStyle=col.muted;c.textAlign="left";
-  c.fillText("x · 16×16 uint8",L.xi,12);c.fillText(L.narrow?"fc1 · 64 → uint8":"fc1 · 64 int32 → uint8",L.xh,12);c.fillText(L.yo>20?"fc2 · 10 logits":"fc2",L.xo,L.yo>20?L.yo-10:12);
+  c.fillText("x · 16×16 uint8",L.xi,12);if(anim&&anim.phase==="requant"){c.fillStyle=col.warm;c.fillText(L.narrow?"ReLU → uint8":"ReLU · rescale → uint8",L.xh,12);c.fillStyle=col.muted}else c.fillText(L.narrow?"fc1 · 64 → uint8":"fc1 · 64 int32 → uint8",L.xh,12);c.fillText(L.yo>20?"fc2 · 10 logits":"fc2",L.xo,L.yo>20?L.yo-10:12);
   var ph=anim?anim.phase:"done";
   // wires for the current step
   if(anim&&X){
@@ -144,7 +144,6 @@ function drawNet(){
     var hot=anim&&((ph==="fc1"&&mode==="serial"&&anim.cur.o===o)||(ph==="fc2"&&anim.cur.i===o));
     c.strokeStyle=hot?col.warm:col.line;c.lineWidth=hot?1.5:1;c.strokeRect(x+1.5,y+1.5,hs-3,hs-3);
   }
-  if(ph==="requant"){c.fillStyle=col.warm;c.textAlign="center";c.fillText("ReLU · rescale · uint8",L.xh+L.g/2,L.y0+L.g+0)}
   // outputs
   var rh=L.oh/10,maxA=1;if(R)for(o=0;o<10;o++)maxA=Math.max(maxA,Math.abs(R.a2[o]));
   var bx=L.xo+16,bw=L.ow-16,mid=bx+bw*0.35;

@@ -26,9 +26,12 @@
 
   /* resume: show the button only once a HEAD request finds the PDF */
   var resumeOK={},resumeBtn=document.getElementById("resume");
+  function resumeLabel(f){return f==="system"?"Resumes (PDF)":"Resume · "+T[f].label+" (PDF)"}
   function setResume(f){
+    resumeBtn.textContent=resumeLabel(f);
+    if(f==="system"){resumeBtn.setAttribute("href","#contact");resumeBtn.removeAttribute("target");resumeBtn.hidden=false;return}
     var url=T[f].resume_pdf;
-    resumeBtn.textContent="Resume · "+T[f].label+" (PDF)";resumeBtn.setAttribute("href",url);
+    resumeBtn.setAttribute("href",url);resumeBtn.setAttribute("target","_blank");
     if(resumeOK[url]!==undefined){resumeBtn.hidden=!resumeOK[url];return}
     resumeBtn.hidden=true;
     if(!window.fetch)return;
@@ -66,18 +69,19 @@
   }
   window.JM_setFocus=function(f){setFocus(f,true)};
 
-  /* layout stability: reserve the height of the longest focus sub-text and the width of the longest
-     Resume label at the current page width, so switching focus never moves anything below or beside them */
+  /* layout stability. Sub-text: every focus's sub-text sits invisibly in the same grid cell, so the box is always
+     as tall as the longest one at any width and with any font (pure CSS, no measuring). Resume: the button keeps
+     the width of its longest label. */
+  (function(){
+    var sub=document.getElementById("sub"),wrap=document.createElement("div");
+    wrap.className="subwrap";sub.parentNode.insertBefore(wrap,sub);wrap.appendChild(sub);
+    Object.keys(T).forEach(function(k){var g=document.createElement("p");g.className="sum ghost";g.setAttribute("aria-hidden","true");g.textContent=T[k].sub;wrap.appendChild(g)});
+  })();
   function reserveSpace(){
-    var sub=document.getElementById("sub"),rb=document.getElementById("resume");
-    var curS=sub.textContent,curR=rb.textContent,wasHidden=rb.hidden,maxH=0,maxW=0;
-    sub.style.minHeight="";rb.style.minWidth="";rb.hidden=false;
-    Object.keys(T).forEach(function(k){
-      sub.textContent=T[k].sub;maxH=Math.max(maxH,sub.getBoundingClientRect().height);
-      rb.textContent="Resume · "+T[k].label+" (PDF)";maxW=Math.max(maxW,rb.getBoundingClientRect().width);
-    });
-    sub.textContent=curS;rb.textContent=curR;rb.hidden=wasHidden;
-    sub.style.minHeight=Math.ceil(maxH)+"px";rb.style.minWidth=Math.ceil(maxW)+"px";
+    var rb=resumeBtn,cur=rb.textContent,wasHidden=rb.hidden,maxW=0;
+    rb.style.minWidth="";rb.hidden=false;
+    Object.keys(T).forEach(function(k){rb.textContent=resumeLabel(k);maxW=Math.max(maxW,rb.getBoundingClientRect().width)});
+    rb.textContent=cur;rb.hidden=wasHidden;rb.style.minWidth=Math.ceil(maxW)+"px";
   }
   reserveSpace();
   var rsT;addEventListener("resize",function(){clearTimeout(rsT);rsT=setTimeout(reserveSpace,120)});
