@@ -225,8 +225,6 @@ document.querySelectorAll(".seg button").forEach(function(b){b.addEventListener(
   document.querySelectorAll("#steps>div").forEach(function(r){r.classList.toggle("on",r.dataset.m===mode)});run();
 })});
 document.querySelectorAll("#steps>div").forEach(function(r){r.classList.toggle("on",r.dataset.m===mode)});
-document.getElementById("replay").addEventListener("click",run);
-document.getElementById("skip").addEventListener("click",function(){if(anim)finish()});
 
 /* ---------- hover inspector ---------- */
 var tipCv=document.createElement("canvas");tipCv.width=tipCv.height=16;

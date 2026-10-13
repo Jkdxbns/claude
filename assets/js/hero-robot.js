@@ -101,7 +101,7 @@ function spawn(){
 }
 
 function setLayer(l){activeL=l}
-function tx(cmd,note,err){if(window.JM_flashCmd&&cmd!=="idle"&&cmd!=="—")JM_flashCmd(!!err);var b=document.getElementById("txCmd");b.textContent=cmd;b.classList.toggle("err",!!err);document.getElementById("txNote").textContent=note||"115200 8N1"}
+function tx(cmd,note,err){if(window.JM_flashCmd&&cmd!=="idle"&&cmd!=="—")JM_flashCmd(!!err);var b=document.getElementById("txCmd");b.textContent=cmd;b.classList.toggle("err",!!err);document.getElementById("txNote").textContent=note||""}
 function warn(c,title,ms){
   /* site port: a held message (PICK REJECTED, NO TARGET) is not replaced by a transient follow-mode warning until it expires */
   if(!ms&&warnState.hold&&performance.now()<warnState.until)return;

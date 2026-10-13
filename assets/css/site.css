@@ -97,7 +97,8 @@ h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.02em;margin:
 /* focus gating: panels outside the chosen focus are view only */
 .panel.locked .disp,.panel.locked .ctl,.panel.locked .strip{cursor:not-allowed}
 .panel.locked .pad,.panel.locked .net,.panel.locked .dual,.panel.locked .erow button,.panel.locked input,.panel.locked .seg{pointer-events:none}
-.panel.locked .ctl,.panel.locked .strip .erow:first-child button,.panel.locked .seg{opacity:.55}
+.panel.locked .ctl,.panel.locked .clearbtn,.panel.locked .seg{opacity:.55}
+.panel.locked .clearbtn{pointer-events:none}
 /* arm */
 .hdr-r{display:flex;align-items:center;gap:10px}
 .retry{font-size:11.5px;padding:3px 9px}
@@ -136,6 +137,7 @@ h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.02em;margin:
 .digit.wait{color:var(--line)}
 .conf{font-family:var(--f-mono);font-size:11.5px;color:var(--muted)}
 .cmdout{font-family:var(--f-mono);font-size:12px;color:var(--warm);margin-top:6px;min-height:1.4em}
+.clearbtn{margin-top:10px;font-size:12px;padding:5px 14px}
 .net{position:relative;min-height:0;min-width:0}
 .net canvas{display:block;width:100%}
 .tip{position:absolute;pointer-events:none;background:var(--fg);color:var(--bg);font-family:var(--f-mono);font-size:11px;line-height:1.5;padding:8px 9px;border-radius:6px;transform:translate(-50%,calc(-100% - 12px));opacity:0;transition:opacity .12s;white-space:nowrap;z-index:2;display:grid;gap:6px;justify-items:start}
@@ -158,7 +160,8 @@ h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.02em;margin:
 @media (max-width:480px){.tx .note{max-width:100%;margin-left:0}}
 .fscope{height:156px;border-radius:8px;overflow:hidden;background:var(--scr)}
 .fscope canvas{display:block;width:100%;height:100%}
-.ctl{display:grid;gap:12px;align-content:start;font-family:var(--f-mono);font-size:12px}
+/* sliders span the scope column top to bottom: speed level with the TX row, the last slider level with the scope's bottom edge */
+.ctl{display:grid;gap:12px;align-content:space-between;font-family:var(--f-mono);font-size:12px}
 .ctl .h{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}
 .ctl .h span{color:var(--muted)}
 .ctl .h b{font-weight:500;font-variant-numeric:tabular-nums}
