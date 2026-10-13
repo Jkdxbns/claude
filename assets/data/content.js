@@ -399,7 +399,8 @@ window.JM_CONTENT = {
     "EMA observer"
    ],
    "github": null,
-   "note": "Live demo: the Perceive panel in the hero runs this trained network. Claim only the training; never claim the hardware export, requantization constants or FPGA side."
+   "note": "Live demo: the Perceive panel in the hero runs this trained network.",
+   "claim_rule": "Claim only the training; never claim the hardware export, requantization constants or FPGA side. Internal rule, never render."
   },
   {
    "id": "asr",
@@ -1008,6 +1009,7 @@ window.JM_CONTENT = {
    "stm32-temp",
    "cuda-vgg16",
    "slm-compression",
+   "qat-mnist",
    "asr",
    "gpt2",
    "ros-arm",
@@ -1020,9 +1022,7 @@ window.JM_CONTENT = {
    "telemetry-gateway",
    "serial-data-plotter"
   ],
-  "pending": [
-   "qat-mnist"
-  ],
+  "pending": [],
   "path": "/assets/img/projects/<id>.webp",
   "og": "/assets/img/og-image.png",
   "videos": {
