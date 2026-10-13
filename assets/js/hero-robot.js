@@ -261,12 +261,6 @@ function fwText(){
   document.getElementById("vSpeed").textContent=CFG.speed+" °/s";
   document.getElementById("vS").textContent=CFG.sMin+"–"+CFG.sMax+"°";
   document.getElementById("vE").textContent=CFG.eMin+"–"+CFG.eMax+"°";
-  var n=function(v){return '<span class="n">'+v+'</span>'};
-  document.getElementById("fcfg").innerHTML='<span class="c">// joint config the firmware enforces</span>\n'+
-    'joint_t shoulder = { .pin = 6, .min = '+n(CFG.sMin)+', .max = '+n(CFG.sMax)+' };\n'+
-    'joint_t elbow    = { .pin = 5, .min = '+n(CFG.eMin)+', .max = '+n(CFG.eMax)+' };\n'+
-    '#define SLEW_DEG_PER_S   '+n(CFG.speed)+'\n'+
-    '#define GRIP_CLOSE_ANGLE '+GRIP_CLOSE+'   <span class="c">// close at ToF 25 mm</span>';
 }
 function cfgChanged(){buildWS();fwText();lastFW="";lastUser=performance.now()}
 var fSpeed=document.getElementById("fSpeed");fSpeed.value=CFG.speed;
