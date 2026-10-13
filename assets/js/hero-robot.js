@@ -242,7 +242,7 @@ function updateFW(){
   lanes.forEach(function(ln,k){
     var top=k*lh,hi=top+lh*0.24,lo=top+lh*0.76,px=pw/20,x0=L+px,u=us(ln[2]);
     if(k){c.strokeStyle=col["scr-grid"];c.beginPath();c.moveTo(0,Math.round(top)+.5);c.lineTo(w,Math.round(top)+.5);c.stroke()}
-    c.fillStyle=col.ch1;c.globalAlpha=.14;c.fillRect(x0+us(ln[3])/1000*px,hi,(us(ln[4])-us(ln[3]))/1000*px,lo-hi);c.globalAlpha=1;
+    
     c.strokeStyle=col.ch1;c.lineWidth=1.6;c.beginPath();c.moveTo(L,lo);c.lineTo(x0,lo);c.lineTo(x0,hi);c.lineTo(x0+u/1000*px,hi);c.lineTo(x0+u/1000*px,lo);c.lineTo(L+pw,lo);c.stroke();
     c.textAlign="left";c.fillStyle=col["scr-text"];c.fillText(ln[0]+" "+ln[1],8,(hi+lo)/2+4);
     c.textAlign="right";c.fillStyle=col.ch1;c.fillText(String(ln[2]).padStart(3,"0")+"° "+u+" µs",w-8,(hi+lo)/2+4);
@@ -380,7 +380,7 @@ function tick(now){
   armMoving=!!move||Math.abs(A.q1-pq1)+Math.abs(A.q2-pq2)>0.0015;pq1=A.q1;pq2=A.q2;
   blocks.forEach(function(b){
     if(b.state==="table"&&b.alpha<1)b.alpha=Math.min(1,b.alpha+Math.min(raw,.5)*2.5);
-    if(b.state==="falling"){var floor=G.tableY-G.cube/2-2;b.vy+=dt*1400;b.y=Math.min(floor,b.y+b.vy*dt);if(b.y>=floor){b.alpha-=dt*1.6;if(b.alpha<=0)b.state="gone"}}
+    if(b.state==="falling"){var floor=G.tableY-G.cube/2-2;b.x+=(G.binX-b.x)*Math.min(1,dt*12);b.vy+=dt*1400;b.y=Math.min(floor,b.y+b.vy*dt);if(b.y>=floor){b.alpha-=dt*1.6;if(b.alpha<=0)b.state="gone"}}
   });
   if(now>warnState.until)document.getElementById("warn").classList.remove("on");
   if(mode==="follow"&&!blocks.some(function(b){return b.state==="table"||b.state==="falling"})){

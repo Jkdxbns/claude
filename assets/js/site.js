@@ -177,6 +177,8 @@ function renderContact(){
   document.getElementById("ctGh").href=P.github;document.getElementById("ctGhH").textContent=handle(P.github,"@");
   document.getElementById("ctLi").href=P.linkedin;document.getElementById("ctLiH").textContent=handle(P.linkedin,"in/");
   document.getElementById("mail").textContent=P.email;document.getElementById("mailto").href="mailto:"+P.email;
+  var mc=document.getElementById("mailto").closest(".ct-card");mc.classList.add("ct-click");
+  mc.addEventListener("click",function(e){if(e.target.closest("#copy")||e.target.closest("a"))return;location.href="mailto:"+P.email});
   renderRes();
   var out=document.getElementById("copied");
   document.getElementById("copy").addEventListener("click",function(){

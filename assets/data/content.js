@@ -7,10 +7,10 @@ window.JM_CONTENT = {
   "email": "jmascarenhas1998@gmail.com",
   "linkedin": "https://www.linkedin.com/in/justinmascarenhas/",
   "github": "https://github.com/Jkdxbns",
-  "location": "Arlington, TX",
+  "location": "Dallas–Fort Worth, TX",
   "domain": "justinmascarenhas.com",
   "degree_line": "M.S. Computer Engineering, Rochester Institute of Technology (graduated May 2026)",
-  "contact_intro": "Open to embedded firmware, robotics and edge AI roles: building systems where the model, the firmware and the arm work as one. Based in Arlington, TX."
+  "contact_intro": "Open to embedded firmware, robotics and edge AI roles: building systems where the model, the firmware and the arm work as one. Based in Dallas–Fort Worth, TX."
  },
  "about": "I am a computer engineer who works where models meet hardware: bare-metal firmware on Cortex-M, TensorRT and CUDA on NVIDIA Jetson, and robots that close the loop between the two. I finished my M.S. in Computer Engineering at RIT in May 2026.",
  "tracks": {
