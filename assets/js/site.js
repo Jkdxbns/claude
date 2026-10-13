@@ -194,17 +194,8 @@ var io="IntersectionObserver"in window&&!reduce?new IntersectionObserver(functio
 function observe(scope){scope.querySelectorAll(".rise:not(.in)").forEach(function(el){if(io)io.observe(el);else el.classList.add("in")})}
 
 root.classList.add("js");
-function renderGuide(){
-  var g=C.hero_guide,el=document.getElementById("guide");if(!g||!el)return;
-  document.getElementById("gTitle").textContent=g.title;
-  document.getElementById("gAbout").textContent=g.about;
-  document.getElementById("gTip").textContent=g.tip;
-  document.getElementById("gSteps").innerHTML=g.steps.map(function(s,i){
-    return '<li class="g-step" data-p="'+esc(s.p)+'"><span class="g-n">'+(i+1)+'</span><div><b>'+esc(s.name)+'</b><p>'+esc(s.text)+'</p></div></li>'}).join("");
-  try{if(localStorage.getItem("jm-guide")==="closed")el.open=false}catch(e){}
-  el.addEventListener("toggle",function(){try{localStorage.setItem("jm-guide",el.open?"open":"closed")}catch(e){}});
-}
-renderChips();renderSelected();renderAll();renderLower();renderExp();renderAbout();renderContact();renderGuide();
+function renderHint(){var el=document.getElementById("heroHint");if(el&&C.hero_hint)el.textContent=C.hero_hint}
+renderChips();renderSelected();renderAll();renderLower();renderExp();renderAbout();renderContact();renderHint();
 observe(document);
 seen=true;
 window.addEventListener("jm-focus",function(){renderSelected();renderAll();renderRes()});

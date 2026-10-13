@@ -72,26 +72,8 @@ h1{font-size:clamp(30px,4vw,46px);line-height:1.08;letter-spacing:-.02em;margin:
 @media (max-width:520px){.layer small{display:none}}
 
 /* board */
-/* visitor guide: fixed text, locked panels' steps only dim, so switching focus never changes its height */
-.guide{border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-bottom:18px}
-.guide summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;padding:12px 16px;font:500 13px var(--f-mono);letter-spacing:.04em;color:var(--fg)}
-.guide summary::-webkit-details-marker{display:none}
-.guide summary::before{content:"?";display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:var(--bg);font-weight:600;font-size:12px}
-.guide summary::after{content:"Hide";margin-left:auto;font:500 11.5px var(--f-mono);color:var(--muted)}
-.guide:not([open]) summary::after{content:"Show"}
-.guide summary:hover::after{color:var(--accent)}
-.g-body{padding:0 16px 16px;display:grid;gap:12px}
-.g-about{margin:0;color:var(--fg);font-size:14.5px;line-height:1.6;max-width:110ch}
-.g-steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-@media (max-width:860px){.g-steps{grid-template-columns:minmax(0,1fr)}}
-.g-step{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);transition:opacity .25s}
-.g-step b{font:600 13px var(--f-mono);color:var(--accent)}
-.g-step p{margin:3px 0 0;font-size:13.5px;line-height:1.55;color:var(--muted)}
-.g-n{flex:none;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;border:1px solid var(--accent);color:var(--accent);font:600 12px var(--f-mono)}
-.g-tip{margin:0;font:12px var(--f-mono);color:var(--muted)}
-[data-focus="embedded"] .g-step[data-p="ai"],[data-focus="embedded"] .g-step[data-p="rb"],
-[data-focus="edge-ai"] .g-step[data-p="fw"],[data-focus="edge-ai"] .g-step[data-p="rb"],
-[data-focus="robotics"] .g-step[data-p="ai"],[data-focus="robotics"] .g-step[data-p="fw"]{opacity:.42}
+/* one-line visitor hint under the layer chain (fixed text, so focus switches never move it) */
+.hint-line{margin:0 0 14px;font-size:14px;line-height:1.55;color:var(--muted);max-width:110ch}
 .board{display:grid;grid-template-columns:minmax(0,360px) minmax(0,1fr);grid-template-areas:"edge arm" "fw fw";gap:18px}
 @media (max-width:900px){.board{grid-template-columns:1fr;grid-template-areas:"arm" "edge" "fw"}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;overflow:hidden;min-width:0;transition:border-color .3s,box-shadow .3s}
