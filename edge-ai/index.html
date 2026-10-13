@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en" data-focus="edge-ai">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Justin Mascarenhas · Edge AI</title>
+<meta name="description" content="Edge AI focus: quantization, CUDA and TensorRT on Jetson. You control perception: draw a digit and my own int8 network, running in your browser, tells the arm which block to pick.">
+<link rel="canonical" href="https://justinmascarenhas.com/edge-ai/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Justin Mascarenhas">
+<meta property="og:url" content="https://justinmascarenhas.com/edge-ai/">
+<meta property="og:title" content="Justin Mascarenhas · Edge AI">
+<meta property="og:description" content="Edge AI focus: quantization, CUDA and TensorRT on Jetson. You control perception: draw a digit and my own int8 network, running in your browser, tells the arm which block to pick.">
+<meta property="og:image" content="https://justinmascarenhas.com/assets/img/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Justin Mascarenhas: robotics, firmware and edge AI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Justin Mascarenhas · Edge AI">
+<meta name="twitter:description" content="Edge AI focus: quantization, CUDA and TensorRT on Jetson. You control perception: draw a digit and my own int8 network, running in your browser, tells the arm which block to pick.">
+<meta name="twitter:image" content="https://justinmascarenhas.com/assets/img/og-image.png">
+<meta name="theme-color" content="#f4f5f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111413" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem("jm-theme");if(t)document.documentElement.setAttribute("data-theme",t)}catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Person","name":"Justin Mascarenhas","url":"https://justinmascarenhas.com/","sameAs":["https://www.linkedin.com/in/justinmascarenhas/","https://github.com/Jkdxbns"],"alumniOf":{"@type":"CollegeOrUniversity","name":"Rochester Institute of Technology"}}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  <pattern id="gp-minor" width="12" height="12" patternUnits="userSpaceOnUse"><path class="gm" d="M12 0H0V12" fill="none"/></pattern>
+  <pattern id="gp-major" width="60" height="60" patternUnits="userSpaceOnUse"><path class="gM" d="M60 0H0V60" fill="none"/></pattern>
+</defs></svg>
+
+<header class="top">
+  <div class="top-in">
+    <a class="mark" href="/" aria-label="Justin Mascarenhas, home">JM</a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#projects">Projects</a><a href="#experience">Experience</a><a href="#about">About</a><a href="#contact">Contact</a>
+    </nav>
+    <button class="btn tbtn" id="themeBtn" type="button" aria-label="Toggle light or dark theme"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M8 1.75a6.25 6.25 0 0 1 0 12.5z" fill="currentColor"/></svg></button>
+  </div>
+</header>
+
+<main class="wrap" id="main">
+  <div id="hero">
+  <section class="intro" aria-labelledby="h1">
+    <div>
+      <div class="label">Justin Mascarenhas · M.S. CE, RIT 2026</div>
+      <h1 id="h1">I build robots end to end: the model that sees, the firmware that drives, the arm that moves.</h1>
+      <p class="sum" id="sub">Edge AI focus: quantization, CUDA and TensorRT on Jetson. You control perception: draw a digit and my own int8 network, running in your browser, tells the arm which block to pick.</p>
+    </div>
+    <div class="side">
+      <div class="ctas">
+        <a class="btn primary" href="#projects">View projects</a>
+        <a class="btn" id="resume" href="/assets/resume/Justin_Mascarenhas_Resume_Edge_AI.pdf" target="_blank" rel="noopener" hidden>Resume · Edge AI (PDF)</a>
+        <a class="btn" href="#contact">Contact</a>
+      </div>
+      <div><div class="label" style="margin-bottom:6px">Focus</div>
+        <div class="fsw" role="group" aria-label="Choose a focus">
+          <button type="button" data-f="system" aria-pressed="false">System</button>
+          <button type="button" data-f="embedded" aria-pressed="false">Embedded</button>
+          <button type="button" data-f="robotics" aria-pressed="false">Robotics</button>
+          <button type="button" data-f="edge-ai" aria-pressed="true">Edge AI</button>
+        </div></div>
+    </div>
+  </section>
+
+  <div class="chain" aria-label="System layers">
+    <button type="button" class="layer" data-l="ai" data-go="edge-ai">Perceive <small>· Edge AI</small></button><span class="arrow"></span>
+    <button type="button" class="layer" data-l="fw" data-go="embedded">Command <small>· Firmware</small></button><span class="arrow"></span>
+    <button type="button" class="layer" data-l="rb" data-go="robotics">Move <small>· Robotics</small></button>
+  </div>
+
+  <div class="board">
+    <!-- PERCEIVE: Edge AI -->
+    <div class="panel" id="p-edge">
+      <div class="phd"><span><b>Perceive</b> · <span class="tag">my QAT int8 MLP</span> <span class="vo">view only</span></span>
+        <div class="seg" role="group" aria-label="Execution model"><button type="button" data-m="serial" aria-pressed="false">Serial</button><button type="button" data-m="parallel" aria-pressed="true">64 lanes</button></div></div>
+      <div class="disp">
+        <div class="edge">
+          <div class="etop">
+            <div class="pad" id="pad"><canvas id="padCv" aria-label="Drawing pad: draw the digit of the block to pick"></canvas><div class="ph" id="padPh">draw a<br>block's digit</div></div>
+            <div><div class="digit wait" id="digit">·</div><div class="conf" id="conf">&nbsp;</div><div class="cmdout" id="cmdOut"></div></div>
+          </div>
+          <div class="net" id="net"><canvas id="netCv"></canvas><div class="tip" id="tip"></div></div>
+        </div>
+        <div id="code" hidden></div><div id="top3" hidden></div>
+      </div>
+      <div class="strip">
+        <div class="erow"><button class="btn" id="clear" type="button">Clear</button><button class="btn" id="replay" type="button">Replay</button><button class="btn" id="skip" type="button">Skip</button><div class="counters" id="counters"></div></div>
+        <div class="erow"><span class="muted">MNIST</span><div class="samples" id="samples"></div><span class="muted"><b id="realMs">–</b></span></div>
+      </div>
+    </div>
+
+    <!-- MOVE: robot arm -->
+    <div class="panel" id="p-arm">
+      <div class="phd"><span><b>Move</b> · <span class="tag">2-link IK, collision-checked</span></span><span class="hdr-r"><span class="vo">view only</span><span id="hint">steer · click a block</span><button class="btn retry" id="retryBtn" type="button" title="Re-home the arm and retry the last rejected pick">↺ Retry</button></span></div>
+      <div class="disp" id="stage">
+        <canvas id="cv" role="img" aria-label="Two-link robot arm with numbered blocks. The block picked is the digit classified by the Edge AI panel; firmware limits shade the reachable workspace."></canvas>
+        <div class="warn" id="warn" role="status"><b id="warnT">COLLISION WARNING · CANNOT MOVE</b><span id="warnWhy"></span></div>
+      </div>
+    </div>
+
+    <!-- COMMAND: firmware -->
+    <div class="panel" id="p-fw">
+      <div class="phd"><span><b>Command</b> · <span class="tag">Arduino servo firmware</span></span><span><span class="vo">view only</span> 50 Hz PWM · 115200 8N1</span></div>
+      <div class="fwgrid">
+        <div>
+          <div class="tx"><span class="k">TX →arduino</span><b id="txCmd">idle</b><span class="note" id="txNote">115200 8N1</span></div>
+          <div class="fscope"><canvas id="fwScope" aria-label="Three-channel scope: shoulder, elbow and gripper servo pulses inside their firmware limit bands"></canvas></div>
+        </div>
+        <div class="ctl">
+          <div><div class="h"><span>Joint speed</span><b id="vSpeed">–</b></div><input type="range" id="fSpeed" min="30" max="300" step="10" aria-label="Joint speed in degrees per second"></div>
+          <div><div class="h"><span>Shoulder limits</span><b id="vS">–</b></div>
+            <div class="dual" id="dS"><div class="trk"></div><div class="sel"></div><button type="button" class="th" role="slider" aria-label="Shoulder minimum angle"></button><button type="button" class="th" role="slider" aria-label="Shoulder maximum angle"></button></div></div>
+          <div><div class="h"><span>Elbow limits</span><b id="vE">–</b></div>
+            <div class="dual" id="dE"><div class="trk"></div><div class="sel"></div><button type="button" class="th" role="slider" aria-label="Elbow minimum angle"></button><button type="button" class="th" role="slider" aria-label="Elbow maximum angle"></button></div></div>
+          <div class="code" id="fcfg"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <section class="sec" id="projects" aria-labelledby="h-sel">
+    <div class="shd"><h2 id="h-sel">Selected work</h2><span class="label" id="selMeta"></span></div>
+    <div class="cards" id="selGrid"></div>
+  </section>
+
+  <section class="sec" id="all-projects" aria-labelledby="h-all">
+    <div class="shd"><h2 id="h-all">All projects</h2><span class="label" id="allMeta"></span></div>
+    <div class="chips" id="chips" role="group" aria-label="Filter projects"></div>
+    <div class="idx" id="allList" aria-live="polite"></div>
+    <div class="lower">
+      <div class="box"><h3 class="sub">Now building</h3><div id="nowB"></div></div>
+      <div class="box"><h3 class="sub">Archive</h3><div id="arch"></div></div>
+    </div>
+  </section>
+
+  <section class="sec" id="experience" aria-labelledby="h-exp">
+    <div class="shd"><h2 id="h-exp">Experience</h2></div>
+    <div id="exp"></div>
+  </section>
+
+  <section class="sec" id="about" aria-labelledby="h-about">
+    <div class="shd"><h2 id="h-about">About</h2></div>
+    <div class="about">
+      <div>
+        <p class="about-text" id="aboutText"></p>
+        <h3 class="sub">Education</h3>
+        <div class="edu" id="edu"></div>
+      </div>
+      <div>
+        <h3 class="sub">Awards</h3>
+        <ul class="awards" id="awards"></ul>
+        <h3 class="sub">Skills</h3>
+        <table class="skills" id="skills"></table>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="contact" aria-labelledby="h-contact">
+    <div class="shd"><h2 id="h-contact">Contact</h2><span class="label" id="loc"></span></div>
+    <div class="contact">
+      <div>
+        <div class="label">Email</div>
+        <p class="mail" id="mail"></p>
+        <div class="crow">
+          <button class="btn" id="copy" type="button">Copy email</button>
+          <a class="btn primary" id="mailto" href="#">Send email</a>
+          <span class="copied" id="copied" role="status" aria-live="polite"></span>
+        </div>
+      </div>
+      <div class="crow">
+        <a class="btn" id="li" href="#" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a class="btn" id="gh" href="#" target="_blank" rel="noopener">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="foot"><span>© 2026 Justin Mascarenhas</span><span>justinmascarenhas.com</span></footer>
+</main>
+
+<div class="dr-back" id="drBack" hidden></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drTitle" hidden tabindex="-1">
+  <div class="dr-hd"><span class="label">Project</span><button class="btn dr-x" id="drClose" type="button" aria-label="Close project details">×</button></div>
+  <div class="dr-body" id="drBody"></div>
+</aside>
+
+<noscript><p class="wrap">The live demos and project lists need JavaScript. Email: jmascarenhas1998@gmail.com · <a href="https://www.linkedin.com/in/justinmascarenhas/">LinkedIn</a> · <a href="https://github.com/Jkdxbns">GitHub</a></p></noscript>
+
+<script src="/assets/data/content.js"></script>
+<script src="/assets/data/qat-weights.js"></script>
+<script src="/assets/js/theme.js"></script>
+<script src="/assets/js/hero-page.js"></script>
+<script src="/assets/js/hero-robot.js"></script>
+<script src="/assets/js/hero-edge.js"></script>
+<script src="/assets/js/site.js"></script>
+</body>
+</html>
