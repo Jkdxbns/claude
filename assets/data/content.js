@@ -19,8 +19,10 @@ window.JM_CONTENT = {
    "topics": [
     "Full-time role",
     "Contract",
+    "Resume request",
     "Just saying hi"
-   ]
+   ],
+   "resume_topic": "Resume request"
   }
  },
  "about": "I am a computer engineer who works where models meet hardware: bare-metal firmware on Cortex-M, TensorRT and CUDA on NVIDIA Jetson, and robots that close the loop between the two. I finished my M.S. in Computer Engineering at RIT in May 2026.",
@@ -42,7 +44,6 @@ window.JM_CONTENT = {
     "gpt2",
     "robocon"
    ],
-   "resume_pdf": "/assets/resume/Justin_Mascarenhas_Resume_System.pdf",
    "headline": "I build robots end to end: the model that sees, the firmware that drives, the actuators that move.",
    "sub": "M.S. Computer Engineering, RIT. One system from my capstone, COFFIN: a model decides what to pick, firmware turns that into servo pulses, and the arm moves. Every panel is live: draw a digit, tune the firmware, steer the arm."
   },
@@ -64,8 +65,7 @@ window.JM_CONTENT = {
     "asr",
     "frame-sim",
     "gpt2"
-   ],
-   "resume_pdf": "/assets/resume/Justin_Mascarenhas_Resume_Embedded.pdf"
+   ]
   },
   "robotics": {
    "label": "Robotics",
@@ -85,8 +85,7 @@ window.JM_CONTENT = {
     "slm-compression",
     "gpt2",
     "robocon"
-   ],
-   "resume_pdf": "/assets/resume/Justin_Mascarenhas_Resume_Robotics.pdf"
+   ]
   },
   "edge-ai": {
    "label": "Edge AI",
@@ -106,8 +105,7 @@ window.JM_CONTENT = {
     "ros-arm",
     "frame-sim",
     "robocon"
-   ],
-   "resume_pdf": "/assets/resume/Justin_Mascarenhas_Resume_Edge_AI.pdf"
+   ]
   }
  },
  "default_track": "system",

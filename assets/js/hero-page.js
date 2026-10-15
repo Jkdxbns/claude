@@ -24,25 +24,6 @@
     return FOCI.indexOf(d)>-1?d:(C.default_track||"system");
   }
 
-  /* resume: show the button only once a HEAD request finds the PDF */
-  var resumeOK={},resumeBtn=document.getElementById("resume");
-  function resumeLabel(f){return f==="system"?"Resumes (PDF)":"Resume · "+T[f].label+" (PDF)"}
-  function setResume(f){
-    resumeBtn.textContent=resumeLabel(f);
-    if(f==="system"){resumeBtn.setAttribute("href","#contact");resumeBtn.removeAttribute("target");resumeBtn.hidden=false;return}
-    var url=T[f].resume_pdf;
-    resumeBtn.setAttribute("href",url);resumeBtn.setAttribute("target","_blank");
-    if(resumeOK[url]!==undefined){resumeBtn.hidden=!resumeOK[url];return}
-    resumeBtn.hidden=true;
-    if(!window.fetch)return;
-    fetch(url,{method:"HEAD",cache:"no-store"}).then(function(r){
-      var ct=(r.headers.get("content-type")||"").toLowerCase();
-      resumeOK[url]=r.ok&&ct.indexOf("html")<0;
-    }).catch(function(){resumeOK[url]=false}).then(function(){
-      if(resumeBtn.getAttribute("href")===url)resumeBtn.hidden=!resumeOK[url];
-    });
-  }
-
   /* gating: locked panels keep running but take no input; Retry stays enabled everywhere */
   var LOCK={"system":[],"embedded":["p-edge","p-arm"],"edge-ai":["p-arm","p-fw"],"robotics":["p-edge","p-fw"]};
   function applyLocks(f){
@@ -56,7 +37,6 @@
     document.documentElement.setAttribute("data-focus",f);
     document.querySelectorAll(".fsw button").forEach(function(b){b.setAttribute("aria-pressed",String(b.dataset.f===f))});
     document.getElementById("sub").textContent=T[f].sub;
-    setResume(f);
     document.querySelectorAll(".layer").forEach(function(l){l.classList.toggle("focus",LMAP[f]===l.dataset.l)});
     Object.keys(PANEL).forEach(function(k){document.getElementById(PANEL[k]).classList.toggle("focused",k===f)});
     applyLocks(f);
@@ -70,22 +50,12 @@
   window.JM_setFocus=function(f){setFocus(f,true)};
 
   /* layout stability. Sub-text: every focus's sub-text sits invisibly in the same grid cell, so the box is always
-     as tall as the longest one at any width and with any font (pure CSS, no measuring). Resume: the button keeps
-     the width of its longest label. */
+     as tall as the longest one at any width and with any font (pure CSS, no measuring). */
   (function(){
     var sub=document.getElementById("sub"),wrap=document.createElement("div");
     wrap.className="subwrap";sub.parentNode.insertBefore(wrap,sub);wrap.appendChild(sub);
     Object.keys(T).forEach(function(k){var g=document.createElement("p");g.className="sum ghost";g.setAttribute("aria-hidden","true");g.textContent=T[k].sub;wrap.appendChild(g)});
   })();
-  function reserveSpace(){
-    var rb=resumeBtn,cur=rb.textContent,wasHidden=rb.hidden,maxW=0;
-    rb.style.minWidth="";rb.hidden=false;
-    Object.keys(T).forEach(function(k){rb.textContent=resumeLabel(k);maxW=Math.max(maxW,rb.getBoundingClientRect().width)});
-    rb.textContent=cur;rb.hidden=wasHidden;rb.style.minWidth=Math.ceil(maxW)+"px";
-  }
-  reserveSpace();
-  var rsT;addEventListener("resize",function(){clearTimeout(rsT);rsT=setTimeout(reserveSpace,120)});
-  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(reserveSpace);
 
   /* live status lights: Perceive while the network computes, Move while the arm moves, Command flickers on every TX */
   var chipAI=document.querySelector('.layer[data-l="ai"]'),chipFW=document.querySelector('.layer[data-l="fw"]'),chipRB=document.querySelector('.layer[data-l="rb"]');

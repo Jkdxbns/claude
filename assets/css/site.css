@@ -377,9 +377,6 @@ a.ct-card:hover,.ct-card.ct-click:hover,.ct-card:focus-within{border-color:var(-
 .ct-copy{margin-left:auto;flex:none;font:500 11.5px var(--f-mono);border:1px solid var(--line);background:none;color:var(--fg);border-radius:6px;padding:4px 9px;cursor:pointer}
 .ct-copy:hover{border-color:var(--accent);color:var(--accent)}
 .copied{position:absolute;right:20px;bottom:5px;font:500 11px var(--f-mono);color:var(--accent)}
-.ct-res a{color:var(--muted);text-decoration:none;border-bottom:1px dotted var(--line)}
-.ct-res a:hover{color:var(--fg)}
-.ct-res a.cur{color:var(--accent);font-weight:600;border-bottom-color:var(--accent)}
 .ct-art{width:100%;height:auto;color:var(--accent);margin-bottom:6px}
 .foot{margin-top:64px;padding-block:22px 32px;border-top:1px solid var(--line);display:grid;gap:10px;color:var(--muted)}
 .foot span:first-child{font-size:15px;color:var(--fg)}

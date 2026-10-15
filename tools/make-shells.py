@@ -36,8 +36,6 @@ for focus in ("embedded", "robotics", "edge-ai"):
     out = out.replace(esc(sys_t["sub"]), esc(t["sub"]))
     out = out.replace(sys_t["sub"], t["sub"])
     out = out.replace(f'{SITE}/"', f'{SITE}{t["path"]}"')
-    out = out.replace(sys_t["resume_pdf"], t["resume_pdf"])
-    out = out.replace(f'Resume · {sys_t["label"]} (PDF)', f'Resume · {t["label"]} (PDF)')
     out = re.sub(r'data-f="system" aria-pressed="true"', 'data-f="system" aria-pressed="false"', out)
     out = out.replace(f'data-f="{focus}" aria-pressed="false"', f'data-f="{focus}" aria-pressed="true"')
     # the JSON-LD url stays the site root

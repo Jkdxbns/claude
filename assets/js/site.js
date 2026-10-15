@@ -12,7 +12,6 @@ var WIP=(C.in_progress||[]).map(function(p){var w={wip:true,period:p.status,spec
 var READY={};(C.images.ready||[]).forEach(function(id){READY[id]=true});
 var TAGNAME={};Object.keys(C.filter_tag_map).forEach(function(k){TAGNAME[C.filter_tag_map[k]]=k});
 var filter="All",query="",seen=false;
-var TRACK_PDFS=["embedded","robotics","edge-ai"];
 
 function $(id){return document.getElementById(id)}
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
@@ -159,13 +158,11 @@ function renderSkills(){
 }
 
 /* ---------- CV page ---------- */
-function pdfButtons(cls){
-  return TRACK_PDFS.map(function(k){var t=C.tracks[k];
-    return '<a class="btn '+cls+'" href="'+esc(t.resume_pdf)+'" target="_blank" rel="noopener">'+esc(t.label)+' resume (PDF) ↓</a>'}).join("");
-}
+/* resumes are not published: every resume link opens the contact form on the "Resume request" topic */
+function requestBtn(cls){return '<a class="btn '+cls+'" href="/#request-resume">Request a tailored resume →</a>'}
 function renderCv(){
   var line=$("cvLine");if(line){var P=C.person;line.textContent=P.degree_line+" · "+P.location+" · "+P.email}
-  var pdf=$("cvPdf");if(pdf)pdf.innerHTML=pdfButtons("pdfbtn");
+  var pdf=$("cvPdf");if(pdf)pdf.innerHTML=requestBtn("pdfbtn");
   renderCvTabs();renderCvProj();
 }
 var cvTab="All";
@@ -199,7 +196,7 @@ function renderAboutPage(){
   var links=$("aboutLinks");
   if(links)links.innerHTML='<a class="btn" href="'+esc(P.github)+'" target="_blank" rel="noopener">GitHub ↗</a>'+
     '<a class="btn" href="'+esc(P.linkedin)+'" target="_blank" rel="noopener">LinkedIn ↗</a>'+
-    '<a class="btn" href="mailto:'+esc(P.email)+'">Email</a>'+pdfButtons("pdfbtn");
+    '<a class="btn" href="mailto:'+esc(P.email)+'">Email</a>'+requestBtn("pdfbtn");
   var ph=$("aboutPhoto");
   if(ph){
     ph.innerHTML='<span class="mono" aria-hidden="true">JM</span>';
@@ -210,11 +207,6 @@ function renderAboutPage(){
 
 /* ---------- Contact (home) ---------- */
 function handle(u,pre){return pre+u.replace(/\/+$/,"").split("/").pop()}
-function renderRes(){
-  var el=$("ctRes");if(!el)return;var f=window.JM_FOCUS;
-  el.innerHTML=TRACK_PDFS.map(function(k){var t=C.tracks[k];
-    return '<a href="'+esc(t.resume_pdf)+'" target="_blank" rel="noopener"'+(k===f?' class="cur" aria-current="true"':'')+'>'+esc(t.label)+'</a>'}).join(" · ");
-}
 function renderContact(){
   if(!$("ctIntro"))return;
   var P=C.person;
@@ -224,7 +216,6 @@ function renderContact(){
   $("mail").textContent=P.email;$("mailto").href="mailto:"+P.email;
   var mc=$("mailto").closest(".ct-card");mc.classList.add("ct-click");
   mc.addEventListener("click",function(e){if(e.target.closest("#copy")||e.target.closest("a"))return;location.href="mailto:"+P.email});
-  renderRes();
   var out=$("copied");
   $("copy").addEventListener("click",function(){
     function ok(){out.textContent="Copied";clearTimeout(out._t);out._t=setTimeout(function(){out.textContent=""},1800)}
@@ -239,13 +230,29 @@ function renderContactForm(){
   if(!form||!open||!F||!F.access_key)return;
   open.hidden=false;
   var mail=$("cfMail");mail.textContent=C.person.email;mail.href="mailto:"+C.person.email;
-  var topic=F.topics[F.topics.length-1],chips=$("cfTopics");
+  var DEF=F.topics[F.topics.length-1],topic=DEF,chips=$("cfTopics");
+  var PH={subject:form.elements.subject.placeholder,message:form.elements.message.placeholder};
   function drawChips(){chips.innerHTML=F.topics.map(function(t){return '<button type="button" class="chip" aria-pressed="'+(t===topic)+'">'+esc(t)+'</button>'}).join("");
-    chips.querySelectorAll("button").forEach(function(b,i){b.addEventListener("click",function(){topic=F.topics[i];drawChips()})})}
+    chips.querySelectorAll("button").forEach(function(b,i){b.addEventListener("click",function(){setTopic(F.topics[i])})})}
+  function setTopic(t){topic=t;var r=t===F.resume_topic;
+    form.elements.subject.placeholder=r?"Role and company":PH.subject;
+    form.elements.message.placeholder=r?"Paste the job description or a link to the posting, and I'll send a resume tailored to it.":PH.message;
+    drawChips()}
   drawChips();
-  open.addEventListener("click",function(){
-    var show=form.hidden;form.hidden=!show;open.setAttribute("aria-expanded",String(show));open.textContent=show?"Close the form ×":"Connect with me →";
-    if(show){form.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});setTimeout(function(){form.elements.name.focus({preventScroll:true})},reduce?0:350)}
+  function show(on,t){
+    form.hidden=!on;open.setAttribute("aria-expanded",String(on));open.textContent=on?"Close the form ×":"Connect with me →";
+    if(!on)return;if(t)setTopic(t);
+    form.scrollIntoView({behavior:reduce?"auto":"smooth",block:"start"});setTimeout(function(){form.elements.name.focus({preventScroll:true})},reduce?0:350);
+  }
+  open.addEventListener("click",function(){show(form.hidden)});
+  /* /#request-resume (hero button, Resume card, CV and About pages) opens the form on the resume topic */
+  function fromHash(){if(location.hash==="#request-resume")setTimeout(function(){show(true,F.resume_topic)},0)}
+  addEventListener("hashchange",fromHash);fromHash();
+  /* a repeat click on a request link leaves the hash unchanged, so open the form directly */
+  document.addEventListener("click",function(e){
+    var a=e.target.closest&&e.target.closest('a[href="#request-resume"],a[href="/#request-resume"]');
+    if(!a||(a.getAttribute("href")[0]==="/"&&location.pathname!=="/"))return;
+    e.preventDefault();try{history.replaceState(null,"",location.pathname+"#request-resume")}catch(err){}show(true,F.resume_topic);
   });
   var status=$("cfStatus"),btn=$("cfBtn");
   function say(msg,kind){status.textContent=msg;status.className="cf-status"+(kind?" "+kind:"")}
@@ -260,7 +267,7 @@ function renderContactForm(){
       body:JSON.stringify({access_key:F.access_key,subject:"[Portfolio · "+topic+"] "+v.subject,from_name:v.name+" via justinmascarenhas.com",
         name:v.name,email:v.email,topic:topic,message:v.message})})
       .then(function(r){return r.json().catch(function(){return {}})})
-      .then(function(j){if(!j.success)throw 0;form.reset();topic=F.topics[F.topics.length-1];drawChips();
+      .then(function(j){if(!j.success)throw 0;form.reset();setTopic(DEF);
         say("Thanks, "+v.name.split(" ")[0]+". Your message is on its way; I'll reply to "+v.email+".","ok")})
       .catch(function(){say("That didn't send. Please email me directly at "+C.person.email+".","err")})
       .then(function(){btn.disabled=false;btn.textContent="Send message"});
@@ -346,5 +353,4 @@ renderFeatured();renderOngoing();renderArchive();renderChips();renderAllGrid();w
 renderExp();renderEdu();renderAwards();renderSkills();renderCv();renderAboutPage();renderContact();renderContactForm();renderHint();
 observe(document);
 seen=true;
-window.addEventListener("jm-focus",function(){renderRes()});
 })();
